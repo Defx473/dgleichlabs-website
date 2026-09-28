@@ -52,6 +52,16 @@ Nameserver-Wechsel.
      setzen (Schutz vor Domain-Übernahme).
 4. Optional: **Enforce HTTPS** aktivieren (kann bis zu 24 h dauern).
 
+> **Wichtig:** Schritt 2 und 3 lassen sich **nicht** automatisieren. Der
+> Workflow-Token darf keine Pages-Site anlegen – ein `enablement: true` in
+> `configure-pages` scheitert mit `Resource not accessible by integration`.
+> Solange Pages aus ist, bricht der Job *Prepare artifact* mit
+> `Get Pages site failed. Please verify that the repository has Pages enabled`
+> ab. Das ist **kein** Projektfehler: der vorgelagerte Job *Verify build output*
+> läuft trotzdem und belegt mit `build.py --check` und `check.py`, dass die
+> Seite gültig ist. Nach dem Aktivieren den Workflow erneut auslösen
+> (*Actions → Deploy static site to GitHub Pages → Re-run all jobs*).
+
 ### 1.3 DNS-Records bei STRATO (exakt diese Werte)
 
 | Typ | Name/Host | Wert | Zweck |
