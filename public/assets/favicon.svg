@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"
+     role="img" aria-label="DGleich Labs">
+  <title>DGleich Labs</title>
+  <rect x="0" y="0" width="32" height="32" rx="8" fill="#111a25"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" fill="none" stroke="#2b3d51"/>
+  <!-- Dieselbe Geometrie wie das Monogramm im Seitenkopf. -->
+  <path d="M11 9h5.2c4.2 0 6.8 2.7 6.8 7s-2.6 7-6.8 7H11V9Zm3.4 3v8h1.7c2.1 0 3.4-1.6 3.4-4s-1.3-4-3.4-4h-1.7Z"
+        fill="#e8eef7"/>
+  <circle cx="22.5" cy="24.5" r="2.2" fill="#4fe0c0"/>
+</svg>

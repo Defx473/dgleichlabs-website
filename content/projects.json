@@ -1,0 +1,37 @@
+{
+  "_comment": [
+    "Einzige Quelle für den Projektbereich. Ein neues Projekt = ein neuer Eintrag hier,",
+    "danach `python tools/build.py` und `python tools/check.py` ausführen.",
+    "'published: false' bedeutet: Eintrag ist vorbereitet, wird aber NICHT auf der Website ausgegeben."
+  ],
+  "projects": [
+    {
+      "id": "project-nova",
+      "name": "Project Nova",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Ein Software-Projekt in früher Entwicklung. Öffentliche Details folgen, sobald sie belastbar sind.",
+      "areas": ["Mobile", "Plattform"],
+      "published": true
+    },
+    {
+      "id": "dimitri-ai-studio",
+      "name": "Dimitri AI Studio",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Werkzeuge rund um KI-gestützte Arbeitsabläufe. In Entwicklung – noch keine Veröffentlichung.",
+      "areas": ["AI Tools", "Desktop"],
+      "published": true
+    },
+    {
+      "id": "htm-work",
+      "name": "HTM Work",
+      "status": "not-published",
+      "statusLabel": "Coming soon",
+      "summary": "Vorbereitet. Veröffentlichung erst nach ausdrücklicher Freigabe.",
+      "areas": ["Mobile"],
+      "published": false,
+      "note": "INTERN: Nicht öffentlich nennen, bis die Freigabe vorliegt. Der Eintrag bleibt vorbereitet (published=false)."
+    }
+  ]
+}

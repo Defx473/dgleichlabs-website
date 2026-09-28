@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ canonical }}">
+  <meta name="robots" content="{{ robots }}">
+  <meta name="theme-color" content="{{ themeColor }}" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="{{ themeColorLight }}" media="(prefers-color-scheme: light)">
+  <meta name="author" content="{{ siteName }}">
+  <meta name="format-detection" content="telephone=no">
+
+  <meta property="og:type" content="{{ ogType }}">
+  <meta property="og:site_name" content="{{ siteName }}">
+  <meta property="og:locale" content="{{ locale }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:title" content="{{ ogTitle }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:image" content="{{ url }}/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ siteName }} – {{ tagline }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ ogTitle }}">
+  <meta name="twitter:description" content="{{ description }}">
+  <meta name="twitter:image" content="{{ url }}/assets/og.png">
+  <meta name="twitter:image:alt" content="{{ siteName }} – {{ tagline }}">
+
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="{{ siteName }} – Startseite">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="32" height="32" role="presentation" focusable="false">
+            <rect x="1" y="1" width="30" height="30" rx="8" class="mark-frame"></rect>
+            <path d="M11 9h5.2c4.2 0 6.8 2.7 6.8 7s-2.6 7-6.8 7H11V9Zm3.4 3v8h1.7c2.1 0 3.4-1.6 3.4-4s-1.3-4-3.4-4h-1.7Z" class="mark-glyph"></path>
+            <circle cx="22.5" cy="24.5" r="2.2" class="mark-accent"></circle>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-name">DGleich<span class="brand-suffix">Labs</span></span>
+          <span class="brand-sub">{{ tagline }}</span>
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <ul>
+{{ nav }}
+        </ul>
+      </nav>
+
+      <a class="btn btn-ghost header-cta" href="/#kontakt">Kontakt</a>
+    </div>
+  </header>
+
+  <main id="main">
+{{ body }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <p class="footer-name">{{ siteName }}</p>
+        <p class="footer-note">{{ legalNote }}</p>
+      </div>
+      <nav class="footer-nav" aria-label="Rechtliches und Kontakt">
+        <ul>
+          <li><a href="/impressum/">Impressum</a></li>
+          <li><a href="/datenschutz/">Datenschutz</a></li>
+          <li><a href="/#kontakt">Kontakt</a></li>
+{{ footerGithub }}
+        </ul>
+      </nav>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; {{ year }} {{ siteName }}. Alle Rechte vorbehalten.</p>
+      <p><a href="mailto:{{ email }}">{{ email }}</a></p>
+    </div>
+  </footer>
+</body>
+</html>

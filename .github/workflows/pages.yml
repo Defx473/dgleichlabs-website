@@ -1,0 +1,75 @@
+# Veröffentlicht den Inhalt von public/ auf GitHub Pages.
+#
+# Voraussetzungen (einmalig im Repository):
+#   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions"
+#   Settings -> Pages -> Custom domain: dgleichlabs.de
+#
+# Benötigt keine Secrets. Es wird ausschließlich der offizielle Pages-Weg
+# verwendet (OIDC-Token via GITHUB_TOKEN mit minimalen Rechten).
+
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify build output
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Bewusst ohne Pillow: die PNG-Erzeugung haengt von Pillow-Version und
+      # installierten Schriften ab und ist nicht bit-genau reproduzierbar.
+      # Ohne Pillow meldet check.py die Bildmass- und Asset-Frischepruefung
+      # als "Hinweis" (sichtbar im Log) statt als Fehler. Lokal ist sie strikt.
+      - name: Verify public/ matches sources
+        run: |
+          python tools/build.py --check
+          python tools/check.py
+
+  build:
+    name: Prepare artifact
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

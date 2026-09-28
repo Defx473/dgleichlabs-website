@@ -1,0 +1,6 @@
+# DGleich Labs
+User-agent: *
+Allow: /
+Disallow: /404.html
+
+Sitemap: https://dgleichlabs.de/sitemap.xml

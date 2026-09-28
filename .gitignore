@@ -1,0 +1,29 @@
+# DGleich Labs – Website
+# Keine Secrets, keine lokalen Artefakte im Repository.
+
+# Lokale Umgebung / Editor
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor-/IDE-Ordner
+.idea/
+.vscode/
+*.swp
+
+# Python (Build-/Check-Skripte liegen in tools/, keine venvs nötig)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node (nicht verwendet – vorsorglich, falls später ein Build-Tool dazukommt)
+node_modules/
+.pnpm-store/
+
+# Lokale Vorschau-/Zwischenartefakte
+.tmp/
+dist-cache/

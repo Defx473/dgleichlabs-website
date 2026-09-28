@@ -1,0 +1,12 @@
+# Cloudflare Pages – Weiterleitungen
+# 301 = dauerhaft. Nur Additiv: es werden keine Pfade versteckt oder umgebogen
+# ausser den unten genannten kanonischen Varianten.
+
+# www -> Hauptdomain (nur aktiv, wenn www tatsaechlich verbunden wird)
+https://www.dgleichlabs.de/*  https://dgleichlabs.de/:splat  301
+
+# index.html-Varianten auf die kanonische Route
+/index.html            /                       301
+/projekte/index.html   /projekte/              301
+/impressum/index.html  /impressum/             301
+/datenschutz/index.html /datenschutz/          301

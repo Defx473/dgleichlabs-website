@@ -1,0 +1,34 @@
+{
+  "name": "DGleich Labs",
+  "legalNote": "Geschäftsbezeichnung eines deutschen Einzelunternehmens – keine GmbH, keine UG, keine Kapitalgesellschaft.",
+  "domain": "dgleichlabs.de",
+  "url": "https://dgleichlabs.de",
+  "email": "info@dgleichlabs.de",
+  "lang": "de",
+  "locale": "de_DE",
+  "tagline": "Software. Apps. Ideas.",
+  "titleSuffix": "DGleich Labs",
+  "defaultTitle": "DGleich Labs – Software, Apps & Digital Products",
+  "defaultDescription": "DGleich Labs ist eine unabhängige Software- und Entwicklungsmarke aus Deutschland. Wir entwickeln Software, mobile Anwendungen und digitale Produkte mit Fokus auf praktische Lösungen.",
+  "themeColor": "#0b0f14",
+  "themeColorLight": "#f6f8fb",
+  "lastmod": "2026-09-28",
+  "githubUrl": "",
+  "brand": {
+    "short": "DGL",
+    "monogramText": "DG"
+  },
+  "nav": [
+    { "label": "Start", "href": "/" },
+    { "label": "Entwicklung", "href": "/#entwicklung" },
+    { "label": "Projekte", "href": "/projekte/" },
+    { "label": "Über uns", "href": "/#about" },
+    { "label": "Kontakt", "href": "/#kontakt" }
+  ],
+  "routes": [
+    { "path": "/", "file": "index.html", "priority": "1.0", "changefreq": "monthly" },
+    { "path": "/projekte/", "file": "projekte/index.html", "priority": "0.8", "changefreq": "monthly" },
+    { "path": "/impressum/", "file": "impressum/index.html", "priority": "0.3", "changefreq": "yearly" },
+    { "path": "/datenschutz/", "file": "datenschutz/index.html", "priority": "0.3", "changefreq": "yearly" }
+  ]
+}
