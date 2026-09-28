@@ -171,14 +171,35 @@ class RealProjectTests(unittest.TestCase):
         unexpected = [item for item in findings if item.text not in gate.EXPECTED_OPEN]
         self.assertEqual(unexpected, [], f"Unerwartete offene Stellen: {unexpected}")
 
-    def test_both_legal_pages_are_blocked_for_the_same_two_inputs(self) -> None:
+    def test_no_placeholder_remains_in_the_delivered_pages(self) -> None:
+        """Die Sachangaben sind eingetragen; es darf kein Platzhalter mehr stehen."""
         findings = gate.scan_directory(gate.ROOT / "public")
-        placeholders = {item.label for item in findings if item.kind == "platzhalter"}
-        self.assertEqual(placeholders, set(gate.KNOWN_PLACEHOLDERS))
-        files = {item.path.name for item in findings}
-        self.assertEqual(files, {"index.html"})
+        placeholders = [(item.label, item.path.name) for item in findings
+                        if item.kind == "platzhalter"]
+        self.assertEqual(placeholders, [], f"Noch offene Platzhalter: {placeholders}")
+
+    def test_both_legal_pages_are_blocked_for_the_review_marker(self) -> None:
+        findings = gate.scan_directory(gate.ROOT / "public")
+        self.assertTrue(findings, "Erwartet: rechtliche Freigabe steht noch aus")
         pages = {item.path.parent.name for item in findings}
         self.assertEqual(pages, {"impressum", "datenschutz"})
+        self.assertEqual({item.kind for item in findings}, {"pruefhinweis"})
+
+    def test_gate_names_the_reason_when_only_the_marker_remains(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "impressum").mkdir()
+            (root / "impressum" / "index.html").write_text(
+                "<p>LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT</p>", encoding="utf-8"
+            )
+            findings = gate.scan_directory(root)
+            buffer = io.StringIO()
+            with redirect_stdout(buffer):
+                code = gate.report(findings, root, verbose=True)
+        output = buffer.getvalue()
+        self.assertNotEqual(code, 0)
+        self.assertIn("rechtliche Freigabe", output)
+        self.assertNotIn("Platzhalter, 0", output)
 
     def test_gate_needs_no_network_or_secrets(self) -> None:
         source = (gate.ROOT / "tools" / "production_gate.py").read_text(encoding="utf-8")

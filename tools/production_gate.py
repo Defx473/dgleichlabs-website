@@ -49,17 +49,24 @@ REQUIRED_PLACEHOLDERS = (
     "[TELEFON]",
 )
 
-# Tatsaechlich offene Angaben in dieser Website. Es sind ausschliesslich
-# personenbezogene Daten des Inhabers - alles andere (Anbieter, Technik,
-# Rechtsgrundlagen) ist eingetragen und darf nicht erfunden werden.
+# Platzhalter-Formulierungen, die dieses Projekt verwendet hat. Sie muessen
+# weiterhin sicher erkannt werden, auch wenn sie aktuell nicht mehr im
+# ausgelieferten Bestand stehen - sonst waere ein Rueckfall unbemerkt.
 KNOWN_PLACEHOLDERS = (
     "[LOKAL EINZUSETZENDER VOLLSTÄNDIGER NAME]",
     "[LOKAL EINZUSETZENDE LADUNGSFÄHIGE ANSCHRIFT]",
+    "[VOLLSTÄNDIGER NAME]",
+    "[STRASSE UND HAUSNUMMER]",
+    "[PLZ UND ORT]",
+    "[TELEFON]",
+    "[HOSTING-PROVIDER]",
+    "[E-MAIL-PROVIDER eintragen]",
 )
 
-# Mehr ist nicht offen: solange nur diese Angaben fehlen, ist der Zustand
-# erwartet und kein Zeichen fuer einen vergessenen Platzhalter.
-EXPECTED_OPEN = KNOWN_PLACEHOLDERS + ("LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT",)
+# Was derzeit offen sein DARF. Steht hier nur der Pruefhinweis, sind alle
+# Sachangaben eingetragen und es fehlt ausschliesslich die menschliche bzw.
+# rechtliche Freigabe. Jede andere Fundstelle gilt als unerwartet.
+EXPECTED_OPEN = ("LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT",)
 
 # Offene Pruefhinweise: Text, der die Seite selbst als unfertig ausweist.
 FORBIDDEN_MARKERS = ("LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT",)
@@ -150,8 +157,16 @@ def report(findings: list[Finding], root: Path, verbose: bool) -> int:
     for finding in findings:
         by_file.setdefault(finding.path, []).append(finding)
 
+    placeholders = [item for item in findings if item.kind == "platzhalter"]
+    markers = [item for item in findings if item.kind == "pruefhinweis"]
+
     print()
     print(f"  BLOCKIERT: {len(findings)} offene Stelle(n) in {len(by_file)} Datei(en).")
+    if not placeholders and markers:
+        print("  Grund: alle Sachangaben sind eingetragen, es fehlt nur noch die")
+        print("         rechtliche Freigabe (Prüfhinweis steht noch in der Seite).")
+    else:
+        print(f"  Grund: {len(placeholders)} Platzhalter, {len(markers)} Prüfhinweis(e).")
     for path, items in by_file.items():
         print(f"   - {display(path)}")
         shown = items if verbose else items[:3]
@@ -161,17 +176,26 @@ def report(findings: list[Finding], root: Path, verbose: bool) -> int:
             print(f"       … und {len(items) - len(shown)} weitere (--list zeigt alle)")
 
     print()
-    print("  Warum das blockiert: Eine öffentlich ausgelieferte Seite mit")
-    print("  Platzhaltern im Impressum oder in der Datenschutzerklärung verletzt")
-    print("  die Pflichtangaben. Der Deploy muss bis zur Klärung ausbleiben.")
-    print()
-    print("  Vorgehen:")
-    print("   1. src/pages/impressum.html und src/pages/datenschutz.html ergänzen")
-    print("      (echte Angaben eintragen, nichts erfinden).")
-    print("   2. Den Hinweis 'LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT'")
-    print("      erst nach der rechtlichen Prüfung entfernen.")
-    print("   3. python tools/build.py && python tools/check.py")
-    print("   4. python tools/production_gate.py   # muss jetzt 0 liefern")
+    if placeholders:
+        print("  Warum das blockiert: Eine öffentlich ausgelieferte Seite mit")
+        print("  Platzhaltern im Impressum oder in der Datenschutzerklärung verletzt")
+        print("  die Pflichtangaben. Der Deploy muss bis zur Klärung ausbleiben.")
+        print()
+        print("  Vorgehen:")
+        print("   1. src/pages/impressum.html und src/pages/datenschutz.html ergänzen")
+        print("      (echte Angaben eintragen, nichts erfinden).")
+        print("   2. python tools/build.py && python tools/check.py")
+    else:
+        print("  Warum das blockiert: Die Pflichtangaben stehen in der Seite, aber die")
+        print("  rechtliche Prüfung ist laut Seitenhinweis noch nicht abgeschlossen.")
+        print("  Der Deploy bleibt aus, bis diese Freigabe bewusst erteilt wird.")
+        print()
+        print("  Vorgehen:")
+        print("   1. Offene Entscheidungen abarbeiten (siehe README, 'Before Production').")
+    print("   3. Den Hinweis 'LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT'")
+    print("      erst danach aus beiden Seiten entfernen.")
+    print("   4. python tools/build.py && python tools/check.py")
+    print("   5. python tools/production_gate.py   # muss dann 0 liefern")
     return 1
 
 

@@ -247,19 +247,21 @@ Wenn später etwas davon hinzukommt (Fonts, Analytics, Formular, Karten, Videos)
 > Platzhalter. Sie sind vor der Veröffentlichung zu ergänzen und rechtlich zu
 > prüfen.
 
-Offen sind **nur noch die personenbezogenen Angaben** – beide Seiten nennen
-sie an derselben Stelle und beide werden vom Production Gate erfasst:
+**Personenbezogene Angaben sind eingetragen** (Name und ladungsfähige
+Geschäftsanschrift des Inhabers, übernommen aus der Gewerbeanmeldung; Details
+und Belege in `docs/LEGAL_SOURCES.md`). Es stehen **keine** Platzhalter mehr in
+der Seite – das Production Gate blockiert daher ausschließlich wegen des
+Prüfhinweises:
 
-- [ ] `src/pages/impressum.html`: `[LOKAL EINZUSETZENDER VOLLSTÄNDIGER NAME]` ersetzen
-- [ ] `src/pages/impressum.html`: `[LOKAL EINZUSETZENDE LADUNGSFÄHIGE ANSCHRIFT]` ersetzen
-- [ ] `src/pages/datenschutz.html`: dieselben zwei Angaben beim Verantwortlichen ersetzen
-- [ ] `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT` erst entfernen, wenn alles eingetragen und geprüft ist
+- [ ] `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT` erst aus
+      `src/pages/impressum.html` und `src/pages/datenschutz.html` entfernen,
+      wenn alle Punkte unten entschieden sind
 
 **DECISION REQUIRED** (bewusst nicht entschieden, nichts erfunden):
 
 - [ ] **Telefonnummer**: derzeit keine angegeben; Kontakt läuft ausschließlich über die E-Mail-Adresse. Für § 5 DDG ist eine schnelle elektronische Kontaktaufnahme erforderlich – ob die E-Mail-Adresse dafür genügt, ist die eigene Rechtsentscheidung.
 - [ ] **Umsatzsteuer**: keine USt-IdNr. angegeben. Klären, ob eine vorliegt oder ob die Kleinunternehmerregelung nach § 19 UStG greift; erst dann eintragen.
-- [ ] **Aufsichtsbehörde** in der Datenschutzerklärung benennen (zuständig ist die Behörde des Bundeslandes, in dem der Inhaber seinen Sitz hat) – ergibt sich erst aus der Anschrift.
+- [ ] **Aufsichtsbehörde**: die Datenschutzerklärung benennt bewusst keine konkrete Behörde, sondern die Zuständigkeit des Sitz-Bundeslandes. Optional, aber üblich: die Behörde namentlich ergänzen.
 - [ ] **GitHub-Pages-Hosting**: prüfen, ob mit GitHub ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO geschlossen ist bzw. geschlossen werden muss. Das „GitHub Data Protection Agreement“ ist Teil des GitHub-Kundenvertrags und gilt nicht automatisch für kostenlose Konten.
 - [ ] **Log-Speicherdauer**: GitHub veröffentlicht für GitHub-Pages-Protokolle keine Frist; eine konkrete Dauer darf nur genannt werden, wenn sie belegt ist.
 

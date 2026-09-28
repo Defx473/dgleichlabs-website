@@ -87,12 +87,28 @@ Anschrift, schnelle elektronische Kontaktaufnahme und unmittelbare Kommunikation
 | Angabe | Status |
 |---|---|
 | Geschäftsbezeichnung „DGleich Labs“ | eingetragen |
-| Inhaber (vollständiger Name) | **offen** – Platzhalter, personenbezogen |
-| Ladungsfähige Anschrift | **offen** – Platzhalter, personenbezogen |
+| Inhaber (vollständiger Name) | eingetragen – Quelle: lokale Gewerbeanmeldung (Datei siehe unten) |
+| Ladungsfähige Anschrift | eingetragen – Quelle: lokale Gewerbeanmeldung (Datei siehe unten) |
 | E-Mail-Adresse | eingetragen |
 | Telefonnummer | nicht angegeben – **DECISION REQUIRED**, siehe unten |
 | Handelsregister | nicht vorhanden, korrekt als „besteht nicht“ ausgewiesen |
 | USt-IdNr. | nicht angegeben – **DECISION REQUIRED**, siehe unten |
+
+**Herkunft der personenbezogenen Angaben:** `~/Downloads/Gewerbe - Ummeldung (PDF).pdf`
+(Gewerbeanmeldung/Gewerbeummeldung der zuständigen Verbandsgemeinde, Datum im
+Formular 26.09.2026). Übernommen wurden **ausschließlich** Name und
+Betriebsstättenanschrift. Nicht übernommen: Geburtsdatum, Geburtsort,
+Telefonnummer, private E-Mail-Adresse und alle weiteren Formularangaben.
+
+Zur Eindeutigkeit: das Formular enthält mehrere Adressen. Ausgewertet wurden die
+Formularfelder (AcroForm-Feldnamen) – `anschrift_betriebsstaette` ist die
+ladungsfähige Geschäftsanschrift. Die im Kopf des Formulars genannte Adresse
+gehört laut Feldnamen (`meta_VG_*`, „Verbandsgemeinde Vordereifel“) zur
+**Behörde**, nicht zum Anbieter.
+
+Es existieren drei Exporte derselben Anmeldung im Download-Ordner
+(`…(1).pdf`, `…(2).pdf`, `….pdf`). Sie stimmen in den hier verwendeten Angaben
+überein; maßgeblich war `….pdf`.
 
 **Telefonnummer:** § 5 Abs. 1 Nr. 2 DDG verlangt Angaben, die eine schnelle
 elektronische Kontaktaufnahme und unmittelbare Kommunikation ermöglichen,
@@ -111,10 +127,24 @@ Angabe zu ergänzen.
 
 ## 6. Aufsichtsbehörde
 
-In der Datenschutzerklärung wird **keine** konkrete Aufsichtsbehörde genannt.
-Zuständig ist die Behörde des Bundeslandes, in dem der Verantwortliche seinen
-Sitz hat – das ergibt sich erst aus der noch offenen Anschrift. Eine erfundene
-oder geratene Behörde wäre falsch.
+In der Datenschutzerklärung wird **keine** konkrete Aufsichtsbehörde genannt,
+sondern die Zuständigkeit des Bundeslandes beschrieben, in dem der
+Verantwortliche seinen Sitz hat. Eine namentliche Nennung wäre möglich, ist aber
+eine bewusste Einzelfallentscheidung und steht als offener Punkt im README.
+
+## 6a. Weitere bewusste Entscheidungen im Text
+
+- **Kein Datenschutzbeauftragter erwähnt.** Der Hinweis „kein DSB bestellt“ wurde
+  entfernt, weil keine Veröffentlichungspflicht festgestellt ist.
+- **Keine Aussage über fehlenden Zugriff auf Hoster-Protokolle.** Frühere Fassung
+  behauptete, es bestehe „kein Zugriff“ auf die beim Hoster anfallenden
+  Protokolle. Diese absolute Aussage ist nicht belastbar belegt und wurde
+  ersetzt durch die nachweisbare Tatsache: Diese Website erhebt **keine eigenen
+  Zugriffsdaten** – keine eigene Protokollierung, keine Auswertung, keine
+  Reichweitenmessung (nachweisbar über `tools/check.py` und den fehlenden
+  Drittanbieter-Code).
+- **Telefonnummer:** Es wird keine genannt – auch nicht die im Formular
+  vorhandene private Nummer.
 
 ## 7. Was dieses Dokument nicht ist
 
