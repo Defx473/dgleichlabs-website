@@ -55,8 +55,15 @@ class RequiredPlaceholderTests(unittest.TestCase):
                 self.assertEqual(labels(scan_html(f"<p>{placeholder}</p>")), [placeholder])
 
     def test_actual_project_placeholders_are_detected(self) -> None:
-        """Der reale Bestand (Stand: Einfuehrung des Gates) wird erkannt."""
+        """Der reale, noch offene Bestand wird erkannt."""
         for placeholder in gate.KNOWN_PLACEHOLDERS:
+            with self.subTest(placeholder=placeholder):
+                self.assertEqual(labels(scan_html(f"<p>{placeholder}</p>")), [placeholder])
+
+    def test_historical_placeholder_wording_is_still_detected(self) -> None:
+        """Umbenannte Platzhalter duerfen nicht durchs Raster fallen."""
+        for placeholder in ("[STRASSE UND HAUSNUMMER]", "[PLZ UND ORT]",
+                            "[HOSTING-PROVIDER]", "[E-MAIL-PROVIDER eintragen]"):
             with self.subTest(placeholder=placeholder):
                 self.assertEqual(labels(scan_html(f"<p>{placeholder}</p>")), [placeholder])
 
@@ -153,6 +160,25 @@ class RealProjectTests(unittest.TestCase):
     def test_current_public_tree_is_blocked(self) -> None:
         findings = gate.scan_directory(gate.ROOT / "public")
         self.assertNotEqual(findings, [], "Erwartet: aktuell noch blockiert")
+
+    def test_only_expected_items_are_open(self) -> None:
+        """Blocker duerfen ausschliesslich die zwei lokalen Angaben sein.
+
+        So faellt sofort auf, wenn irgendwo ein vergessener Platzhalter steht -
+        der Gate bleibt dabei fuer neue, unbekannte Klammern scharf.
+        """
+        findings = gate.scan_directory(gate.ROOT / "public")
+        unexpected = [item for item in findings if item.text not in gate.EXPECTED_OPEN]
+        self.assertEqual(unexpected, [], f"Unerwartete offene Stellen: {unexpected}")
+
+    def test_both_legal_pages_are_blocked_for_the_same_two_inputs(self) -> None:
+        findings = gate.scan_directory(gate.ROOT / "public")
+        placeholders = {item.label for item in findings if item.kind == "platzhalter"}
+        self.assertEqual(placeholders, set(gate.KNOWN_PLACEHOLDERS))
+        files = {item.path.name for item in findings}
+        self.assertEqual(files, {"index.html"})
+        pages = {item.path.parent.name for item in findings}
+        self.assertEqual(pages, {"impressum", "datenschutz"})
 
     def test_gate_needs_no_network_or_secrets(self) -> None:
         source = (gate.ROOT / "tools" / "production_gate.py").read_text(encoding="utf-8")

@@ -242,14 +242,32 @@ Wenn später etwas davon hinzukommt (Fonts, Analytics, Formular, Karten, Videos)
 ## 11. Before Production
 
 > **LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT**
-> Impressum und Datenschutzerklärung sind Vorlagen mit Platzhaltern und müssen
-> vor der Veröffentlichung rechtlich geprüft und vervollständigt werden.
+> Impressum und Datenschutzerklärung beschreiben die tatsächlich eingesetzte
+> Technik, enthalten aber noch die personenbezogenen Angaben des Inhabers als
+> Platzhalter. Sie sind vor der Veröffentlichung zu ergänzen und rechtlich zu
+> prüfen.
+
+Offen sind **nur noch die personenbezogenen Angaben** – beide Seiten nennen
+sie an derselben Stelle und beide werden vom Production Gate erfasst:
+
+- [ ] `src/pages/impressum.html`: `[LOKAL EINZUSETZENDER VOLLSTÄNDIGER NAME]` ersetzen
+- [ ] `src/pages/impressum.html`: `[LOKAL EINZUSETZENDE LADUNGSFÄHIGE ANSCHRIFT]` ersetzen
+- [ ] `src/pages/datenschutz.html`: dieselben zwei Angaben beim Verantwortlichen ersetzen
+- [ ] `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT` erst entfernen, wenn alles eingetragen und geprüft ist
+
+**DECISION REQUIRED** (bewusst nicht entschieden, nichts erfunden):
+
+- [ ] **Telefonnummer**: derzeit keine angegeben; Kontakt läuft ausschließlich über die E-Mail-Adresse. Für § 5 DDG ist eine schnelle elektronische Kontaktaufnahme erforderlich – ob die E-Mail-Adresse dafür genügt, ist die eigene Rechtsentscheidung.
+- [ ] **Umsatzsteuer**: keine USt-IdNr. angegeben. Klären, ob eine vorliegt oder ob die Kleinunternehmerregelung nach § 19 UStG greift; erst dann eintragen.
+- [ ] **Aufsichtsbehörde** in der Datenschutzerklärung benennen (zuständig ist die Behörde des Bundeslandes, in dem der Inhaber seinen Sitz hat) – ergibt sich erst aus der Anschrift.
+- [ ] **GitHub-Pages-Hosting**: prüfen, ob mit GitHub ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO geschlossen ist bzw. geschlossen werden muss. Das „GitHub Data Protection Agreement“ ist Teil des GitHub-Kundenvertrags und gilt nicht automatisch für kostenlose Konten.
+- [ ] **Log-Speicherdauer**: GitHub veröffentlicht für GitHub-Pages-Protokolle keine Frist; eine konkrete Dauer darf nur genannt werden, wenn sie belegt ist.
 
 Vor einer Veröffentlichung abzuarbeiten:
 
-- [ ] **Impressum vervollständigen und prüfen** (Name, Anschrift, Telefon, ggf. USt-IdNr.) – Datei `src/pages/impressum.html`
-- [ ] **Datenschutzerklärung prüfen** (Hosting-Anbieter, E-Mail-Anbieter, Drittland, Log-Speicherdauer) – Datei `src/pages/datenschutz.html`
-- [ ] `content/site.json`: `lastmod` aktualisieren
+- [ ] **Impressum vervollständigen und prüfen** – Datei `src/pages/impressum.html`
+- [ ] **Datenschutzerklärung prüfen** – Datei `src/pages/datenschutz.html`
+- [ ] `content/site.json`: `lastmod` und `legalStand` aktualisieren
 - [ ] **Domain verbinden** (`dgleichlabs.de`, optional `www`) – `docs/DEPLOYMENT.md`
 - [ ] **HTTPS prüfen** (Zertifikat aktiv, „Enforce HTTPS“ bzw. Cloudflare-Universalschutz)
 - [ ] `_headers`-Verhalten beim Hoster prüfen (Cloudflare Pages) oder bewusst darauf verzichten (GitHub Pages)

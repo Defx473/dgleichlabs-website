@@ -164,9 +164,13 @@ Danach committen und pushen. Der Inhalt von `public/` ist das Produkt:
 `.nojekyll`).
 
 **Vor** dem ersten echten Push auf die Live-Domain:
-- Impressum-Platzhalter ersetzt?
-- Datenschutzerklärung geprüft (Hoster, Postfach, Drittland, Logs)?
-- `lastmod` in `content/site.json` aktuell?
+- Impressum-Platzhalter ersetzt (Name, ladungsfähige Anschrift)?
+- Datenschutzerklärung geprüft? Technik und Anbieter sind bereits eingetragen;
+  die Belege und die noch offenen Rechtsentscheidungen stehen in
+  **`docs/LEGAL_SOURCES.md`** (Telefon/USt-IdNr., Aufsichtsbehörde,
+  Auftragsverarbeitung mit GitHub, Log-Speicherdauer).
+- `lastmod` und `legalStand` in `content/site.json` aktuell?
+- `python tools/production_gate.py` liefert `0`?
 
 ## 4. Nach dem Deployment prüfen
 

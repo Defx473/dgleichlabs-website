@@ -41,25 +41,25 @@ if hasattr(sys.stdout, "reconfigure"):
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# Platzhalter, die laut Auftrag sicher erkannt werden muessen. "[ANSCHRIFT]"
-# ist historisch: im Impressum ist er in zwei praezisere Platzhalter aufgeteilt
-# ([STRASSE UND HAUSNUMMER] und [PLZ UND ORT]). Beide Formen werden erkannt.
+# Platzhalter, die laut Auftrag unabhaengig von der konkreten Formulierung
+# sicher erkannt werden muessen (Vertragsbestand: diese drei Marken).
 REQUIRED_PLACEHOLDERS = (
     "[VOLLSTÄNDIGER NAME]",
     "[ANSCHRIFT]",
     "[TELEFON]",
 )
 
-# Vollstaendiger Bestand zum Zeitpunkt der Einfuehrung (dokumentiert den
-# tatsaechlichen Zustand, damit im Bericht nachvollziehbar bleibt, was blockiert).
+# Tatsaechlich offene Angaben in dieser Website. Es sind ausschliesslich
+# personenbezogene Daten des Inhabers - alles andere (Anbieter, Technik,
+# Rechtsgrundlagen) ist eingetragen und darf nicht erfunden werden.
 KNOWN_PLACEHOLDERS = (
-    "[VOLLSTÄNDIGER NAME]",
-    "[STRASSE UND HAUSNUMMER]",
-    "[PLZ UND ORT]",
-    "[TELEFON]",
-    "[HOSTING-PROVIDER]",
-    "[E-MAIL-PROVIDER eintragen]",
+    "[LOKAL EINZUSETZENDER VOLLSTÄNDIGER NAME]",
+    "[LOKAL EINZUSETZENDE LADUNGSFÄHIGE ANSCHRIFT]",
 )
+
+# Mehr ist nicht offen: solange nur diese Angaben fehlen, ist der Zustand
+# erwartet und kein Zeichen fuer einen vergessenen Platzhalter.
+EXPECTED_OPEN = KNOWN_PLACEHOLDERS + ("LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT",)
 
 # Offene Pruefhinweise: Text, der die Seite selbst als unfertig ausweist.
 FORBIDDEN_MARKERS = ("LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT",)

@@ -227,6 +227,7 @@ def build_files() -> dict[Path, str]:
             "year": year,
             "themeColor": site["themeColor"],
             "themeColorLight": site["themeColorLight"],
+            "legalStand": site["legalStand"],
             "title": page.title,
             "ogTitle": page.title,
             "description": page.description,
