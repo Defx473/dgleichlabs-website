@@ -43,9 +43,28 @@ jobs:
           python tools/build.py --check
           python tools/check.py
 
+      - name: Run tool tests
+        run: python -m unittest discover -s tools/tests -t tools
+
+  # NOTBREMSE: Die Veroeffentlichung darf nicht durchlaufen, solange im
+  # Impressum oder in der Datenschutzerklaerung Platzhalter stehen. Der Job
+  # laeuft vor dem Artefakt-Upload, damit nichts Veroeffentlichbares entsteht -
+  # ein fehlgeschlagener Lauf bedeutet hier ausdruecklich NICHT "kaputt",
+  # sondern "noch nicht freigegeben".
+  production-gate:
+    name: Production safety gate
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Block deploy while legal placeholders remain
+        run: python tools/production_gate.py --list
+
   build:
     name: Prepare artifact
-    needs: verify
+    needs: production-gate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

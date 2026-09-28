@@ -98,6 +98,39 @@ Konvention: `public/` wird ausschließlich generiert – niemals direkt bearbeit
 Ausgenommen sind Dateien, die direkt in `public/assets/` gepflegt werden und
 nicht generiert sind (`favicon.svg`, `styles.css`).
 
+### Production Gate (Deploy-Sperre)
+
+`tools/check.py` prüft die **Qualität** der Seite und muss auch dann grün sein,
+wenn die Rechtstexte noch unfertig sind – sonst wäre lokale Entwicklung
+unmöglich. Ob die Seite **veröffentlichbar** ist, entscheidet eine eigene
+Notbremse:
+
+```bash
+python tools/production_gate.py           # Exit 1 = Veröffentlichung blockiert
+python tools/production_gate.py --list    # alle Treffer einzeln zeigen
+python -m unittest discover -s tools/tests -t tools   # Tests des Gates
+```
+
+Der Gate bricht ab, solange in `public/` noch
+
+1. ein bekannter Pflicht-Platzhalter (`[VOLLSTÄNDIGER NAME]`, `[ANSCHRIFT]`,
+   `[TELEFON]`, `[STRASSE UND HAUSNUMMER]`, `[PLZ UND ORT]`,
+   `[HOSTING-PROVIDER]`, `[E-MAIL-PROVIDER eintragen]`),
+2. irgendeine **weitere** eckige Klammer mit Text (also auch später ergänzte
+   Platzhalter, ohne diese Datei zu pflegen) oder
+3. der Hinweis `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT`
+
+steht. Code-Fragmente wie `["Mobile", "Plattform"]` oder
+`[aria-current="page"]` werden **nicht** fälschlich gemeldet.
+
+In der Pipeline läuft der Gate als **eigener Job vor dem Artefakt-Upload**
+(`production-gate` → `build` → `deploy`). Ist er rot, wird nichts hochgeladen
+und nichts veröffentlicht – ein roter Lauf bedeutet dort also ausdrücklich
+*nicht* „kaputt“, sondern *noch nicht freigegeben*.
+
+Lokal ist der Gate **nicht** Teil des Builds: `python tools/build.py` und
+`python tools/serve.py` funktionieren jederzeit.
+
 Hinweis zu Pillow: `tools/assets.py` (nur Raster-Assets) und die Bildmaß-Prüfung
 in `tools/check.py` brauchen **Pillow**. Ist es nicht installiert, meldet
 `check.py` die Asset-Prüfungen als sichtbaren **Hinweis** statt als Fehler – so
@@ -223,6 +256,7 @@ Vor einer Veröffentlichung abzuarbeiten:
 - [ ] **Kontaktadresse testen** – E-Mail an `info@dgleichlabs.de`, Zustellung und Antwortadresse prüfen
 - [ ] **Mobile QA** auf echtem Gerät (iOS + Android), Schriftgrößen, Zoom, Querformat
 - [ ] Tastatur-/Screenreader-Kurztest (Tab-Reihenfolge, Skip-Link, Fokus sichtbar)
+- [ ] **Production Gate grün bekommen**: `python tools/production_gate.py` muss `0` liefern – erst dann darf deployt werden
 - [ ] **Production Build prüfen**: `python tools/build.py --check && python tools/assets.py --check && python tools/check.py`
 - [ ] `sitemap.xml`/`robots.txt` auf der Live-Domain erreichbar
 - [ ] Lighthouse/„Page Speed“ einmal gegen die Live-URL laufen lassen

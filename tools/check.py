@@ -399,6 +399,33 @@ def check_secrets(problems: list[str]) -> None:
                 break
 
 
+def check_production_gate(problems: list[str]) -> None:
+    """Stellt sicher, dass die Deploy-Notbremse vorhanden UND verdrahtet ist.
+
+    Bewusst nur die Verdrahtung: check.py darf NICHT an Platzhaltern scheitern,
+    sonst waere lokale Entwicklung unmoeglich. Ob die Seite veroeffentlichbar
+    ist, entscheidet allein tools/production_gate.py.
+    """
+    gate = ROOT / "tools" / "production_gate.py"
+    if not gate.is_file():
+        problems.append("production_gate.py fehlt – Deploy waere nicht blockiert")
+        return
+
+    workflow = ROOT / ".github" / "workflows" / "pages.yml"
+    if not workflow.is_file():
+        problems.append("pages.yml fehlt – Deployment nicht nachvollziehbar")
+        return
+    text = workflow.read_text(encoding="utf-8")
+    if "tools/production_gate.py" not in text:
+        problems.append("pages.yml ruft production_gate.py nicht auf – Notbremse nicht verdrahtet")
+    if "needs: production-gate" not in text:
+        problems.append("pages.yml: Artefakt-Upload haengt nicht am production-gate")
+
+    tests = ROOT / "tools" / "tests" / "test_production_gate.py"
+    if not tests.is_file():
+        problems.append("Tests fuer das production_gate fehlen")
+
+
 def check_freshness(problems: list[str], notices: list[str]) -> None:
     for script in ("build.py", "assets.py"):
         result = subprocess.run(
@@ -441,6 +468,7 @@ def main() -> int:
     check_css(problems)
     check_headers(problems)
     check_secrets(problems)
+    check_production_gate(problems)
     check_freshness(problems, notices)
 
     print("DGleich Labs – Prüfbericht")

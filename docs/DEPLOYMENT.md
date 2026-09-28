@@ -143,8 +143,20 @@ die E-Mail an der korrekten Übernahme **aller** Records.
 ```bash
 python tools/build.py --check     # public/ ist aktuell
 python tools/assets.py --check    # Assets sind aktuell
-python tools/check.py             # alles grün
+python tools/check.py             # Qualität: alles grün
+python tools/production_gate.py   # Freigabe: 0 = veröffentlichbar
 ```
+
+> **Notbremse:** `python tools/production_gate.py` blockiert die
+> Veröffentlichung, solange in `public/` noch Platzhalter
+> (`[VOLLSTÄNDIGER NAME]`, `[STRASSE UND HAUSNUMMER]`, `[PLZ UND ORT]`,
+> `[TELEFON]`, `[HOSTING-PROVIDER]`, `[E-MAIL-PROVIDER eintragen]`) oder der
+> Hinweis `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT` stehen. In der
+> Pipeline ist das der Job **Production safety gate**, der vor dem
+> Artefakt-Upload läuft (Reihenfolge: `verify` → `production-gate` → `build` →
+> `deploy`). Solange er rot ist, wird **nichts** hochgeladen – der Zustand
+> „Repository gepusht, aber nichts veröffentlicht“ ist damit der erwartete
+> Normalzustand, solange die Rechtstexte offen sind.
 
 Danach committen und pushen. Der Inhalt von `public/` ist das Produkt:
 `index.html`, `404.html`, `projekte/`, `impressum/`, `datenschutz/`, `assets/`,
@@ -192,7 +204,11 @@ Danach committen und pushen. Der Inhalt von `public/` ist das Produkt:
    Zusatzdienste / Konto-Bindung).
 5. Domain-Transfer zu einem anderen Registrar.
 6. Veröffentlichen der Website, solange Impressum/Datenschutz Platzhalter
-   enthalten.
+   enthalten. Technisch erzwingt das der Job **Production safety gate**
+   (`tools/production_gate.py`) – er darf **nicht** umgangen, übersprungen oder
+   abgeschwächt werden, um schneller live zu gehen.
+7. Den Platzhalter-Hinweis `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT`
+   entfernen, ohne dass die rechtliche Prüfung tatsächlich stattgefunden hat.
 
 ## 7. Was in diesem Auftrag bewusst NICHT passiert ist
 
