@@ -23,12 +23,14 @@
     { "label": "Start", "href": "/" },
     { "label": "Entwicklung", "href": "/#entwicklung" },
     { "label": "Projekte", "href": "/projekte/" },
+    { "label": "FieldPro", "href": "/fieldpro/" },
     { "label": "Über uns", "href": "/#about" },
     { "label": "Kontakt", "href": "/#kontakt" }
   ],
   "routes": [
     { "path": "/", "file": "index.html", "priority": "1.0", "changefreq": "monthly" },
     { "path": "/projekte/", "file": "projekte/index.html", "priority": "0.8", "changefreq": "monthly" },
+    { "path": "/fieldpro/", "file": "fieldpro/index.html", "priority": "0.8", "changefreq": "monthly" },
     { "path": "/impressum/", "file": "impressum/index.html", "priority": "0.3", "changefreq": "yearly" },
     { "path": "/datenschutz/", "file": "datenschutz/index.html", "priority": "0.3", "changefreq": "yearly" }
   ]

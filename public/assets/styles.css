@@ -452,6 +452,29 @@ ol {
   font-size: 0.98rem;
 }
 
+/* ---------- Produktmarke (FieldPro) -------------------------------------- */
+
+/* Eigene Produktseiten zeigen ihre Marke ueber dem Seitenkopf. Die Kachel hat
+   bewusst einen hellen Grund: die Marke selbst ist hell/dunkel gezeichnet
+   (weisses Blatt auf dunklem Clipboard) und braucht diesen Kontrast. */
+
+.product-mark {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1.1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 1.1rem;
+  background-color: #ffffff;
+}
+
+.product-mark svg {
+  display: block;
+}
+
 /* ---------- Cards -------------------------------------------------------- */
 
 .card-grid,

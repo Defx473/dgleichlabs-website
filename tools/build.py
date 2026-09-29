@@ -80,6 +80,18 @@ PAGES: tuple[Page, ...] = (
         active_nav="/projekte/",
     ),
     Page(
+        route="/fieldpro/",
+        source="fieldpro.html",
+        out="fieldpro/index.html",
+        title="FieldPro – Mobile Dokumentation für Handwerk & Service",
+        description=(
+            "FieldPro ist eine mobile Dokumentationslösung für Handwerk und Service: "
+            "Mängel, Fotos, Aufmaß und Berichte direkt beim Einsatz. Aktuell in der "
+            "Pilotphase."
+        ),
+        active_nav="/fieldpro/",
+    ),
+    Page(
         route="/impressum/",
         source="impressum.html",
         out="impressum/index.html",

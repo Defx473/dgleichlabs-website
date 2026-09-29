@@ -13,6 +13,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://dgleichlabs.de/fieldpro/</loc>
+    <lastmod>2026-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://dgleichlabs.de/impressum/</loc>
     <lastmod>2026-09-28</lastmod>
     <changefreq>yearly</changefreq>

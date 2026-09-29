@@ -53,6 +53,7 @@ REQUIRED_FILES = [
     "assets/icon-512.png",
     "assets/og.png",
     "projekte/index.html",
+    "fieldpro/index.html",
     "impressum/index.html",
     "datenschutz/index.html",
 ]
