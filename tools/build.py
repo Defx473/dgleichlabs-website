@@ -83,7 +83,7 @@ PAGES: tuple[Page, ...] = (
         route="/fieldpro/",
         source="fieldpro.html",
         out="fieldpro/index.html",
-        title="FieldPro – Mobile Dokumentation für Handwerk & Service",
+        title="FieldPro – DGleich Labs",
         description=(
             "FieldPro ist eine mobile Dokumentationslösung für Handwerk und Service: "
             "Mängel, Fotos, Aufmaß und Berichte direkt beim Einsatz. Aktuell in der "
@@ -95,7 +95,7 @@ PAGES: tuple[Page, ...] = (
         route="/dimitri-ai-studio/",
         source="dimitri-ai-studio.html",
         out="dimitri-ai-studio/index.html",
-        title="Dimitri AI Studio – KI-Werkzeuge in einer Desktop-App",
+        title="Dimitri AI Studio – DGleich Labs",
         description=(
             "Dimitri AI Studio ist eine Desktop-Anwendung, die KI-gestützte Medien- "
             "und Arbeitsabläufe in einer Oberfläche bündelt. In Entwicklung, noch "
@@ -106,7 +106,7 @@ PAGES: tuple[Page, ...] = (
         route="/project-nova/",
         source="project-nova.html",
         out="project-nova/index.html",
-        title="Project Nova – Experimentelle KI-gestützte Simulation",
+        title="Project Nova – DGleich Labs",
         description=(
             "Project Nova ist ein experimentelles Android-Projekt im Bereich "
             "KI-gestützter Simulation mit simulierten Entitäten. In Entwicklung, "
@@ -117,7 +117,7 @@ PAGES: tuple[Page, ...] = (
         route="/ai-game-assistant/",
         source="ai-game-assistant.html",
         out="ai-game-assistant/index.html",
-        title="AI Game Assistant – Bildschirmanalyse auf Android",
+        title="AI Game Assistant – DGleich Labs",
         description=(
             "Der AI Game Assistant ist ein experimentelles Android-Projekt zur "
             "lokalen Analyse von Bildschirminhalten und kontextbezogener Assistenz. "
@@ -128,7 +128,7 @@ PAGES: tuple[Page, ...] = (
         route="/karto/",
         source="karto.html",
         out="karto/index.html",
-        title="KARTO – Experimentelles Projekt im Web3-Umfeld",
+        title="KARTO – DGleich Labs",
         description=(
             "KARTO ist ein experimentelles Softwareprojekt im Umfeld von Web3 und "
             "Solana mit Fokus auf technische Infrastruktur. In Entwicklung, nicht "
