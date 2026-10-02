@@ -24,7 +24,7 @@
     { "label": "Entwicklung", "href": "/#entwicklung" },
     { "label": "Projekte", "href": "/projekte/" },
     { "label": "FieldPro", "href": "/fieldpro/" },
-    { "label": "Über uns", "href": "/#about" },
+    { "label": "Über uns", "href": "/#ueber-uns" },
     { "label": "Kontakt", "href": "/#kontakt" }
   ],
   "routes": [
