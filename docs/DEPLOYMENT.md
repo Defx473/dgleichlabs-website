@@ -122,6 +122,10 @@ nebeneinander existieren:
    *Settings → Pages → Source: **None***. Danach liefert GitHub unter
    `*.github.io` nichts mehr aus. Solange eine Custom Domain dort eingetragen
    ist, bleibt sie sonst als zweite Auslieferung bestehen.
+   **Erledigt und verifiziert (2. Oktober 2026):** Die GitHub-API meldet für
+   das Repository keine Pages-Konfiguration (HTTP 404), und
+   `https://defx473.github.io/dgleichlabs-website/` liefert 404. Es gibt keine
+   zweite Auslieferung neben netcup.
 5. **Webhosting vorbereiten** (netcup CCP) – _ohne_ Zugangsdaten im Repository:
    Domain `dgleichlabs.de` mit der Webhosting-Instanz verbinden, Domain in den
    Webhosting-Einstellungen als Domain anlegen, `httpdocs` prüfen.
@@ -293,12 +297,13 @@ wird.
 - [x] **Sachangaben final** – keine Telefonnummer, keine USt-IdNr.,
       Einzelunternehmen (keine GmbH/UG, kein Handelsregister). Die Angaben
       stehen im Text und werden nicht als offene Entscheidung geführt.
+- [x] **GitHub Pages stillgelegt** – verifiziert am 2. Oktober 2026: die
+      GitHub-API meldet für das Repository keine Pages-Konfiguration (HTTP 404)
+      und `https://defx473.github.io/dgleichlabs-website/` liefert 404. Damit
+      besteht keine zweite Auslieferung neben netcup (Abschnitt 4, Schritt 4).
 
 **Weiterhin offen (Betrieb, kein Rechtsblocker):**
 
-- [ ] **GitHub Pages stilllegen** (Settings → Pages → Source: None) und die
-      Custom Domain dort entfernen – sonst bleibt eine zweite Auslieferung
-      bestehen.
 - [ ] **Mail-Records prüfen**, falls netcup als Nameserver eingesetzt wurde
       (Abschnitt 7, Variante B): MX, SPF, DKIM, DMARC müssen mitgezogen sein.
 - [ ] **`.htaccess`-Wirkung bestätigen** – `curl -I https://dgleichlabs.de/`
@@ -309,4 +314,4 @@ wird.
       Einzelfallentscheidung, kein Blocker).
 
 Details, Belege und der Stand der Rechtstexte: `docs/LEGAL_SOURCES.md` und
-`README.md`, Abschnitt „Before Production“.
+`README.md`, Abschnitt „Produktionsstatus“.

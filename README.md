@@ -279,10 +279,13 @@ Die Notbremse bleibt **scharf**: `tools/production_gate.py` erkennt den
 Prüfhinweis und jeden Platzhalter weiterhin, falls eines davon in den Text
 zurückkehrt. `EXPECTED_OPEN` ist jetzt leer – es darf **nichts** mehr offen sein.
 
+**Verifiziert (2. Oktober 2026): GitHub Pages ist stillgelegt.** Die GitHub-API
+meldet für das Repository keine Pages-Konfiguration (HTTP 404) und
+`https://defx473.github.io/dgleichlabs-website/` liefert 404. Es gibt damit
+keine zweite Auslieferung neben netcup.
+
 **Weiterhin offen (Betrieb, nicht Recht):**
 
-- [ ] **GitHub Pages stilllegen** – *Settings → Pages → Source: None*; sonst
-      bleibt eine zweite Auslieferung bestehen.
 - [ ] **`.htaccess`-Wirkung prüfen** – `curl -I https://dgleichlabs.de/` zeigt
       CSP, `nosniff` und HSTS; `/_headers`, `/_redirects`, `/.nojekyll` liefern
       404.
