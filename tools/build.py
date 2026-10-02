@@ -92,6 +92,50 @@ PAGES: tuple[Page, ...] = (
         active_nav="/fieldpro/",
     ),
     Page(
+        route="/dimitri-ai-studio/",
+        source="dimitri-ai-studio.html",
+        out="dimitri-ai-studio/index.html",
+        title="Dimitri AI Studio – KI-Werkzeuge in einer Desktop-App",
+        description=(
+            "Dimitri AI Studio ist eine Desktop-Anwendung, die KI-gestützte Medien- "
+            "und Arbeitsabläufe in einer Oberfläche bündelt. In Entwicklung, noch "
+            "nicht veröffentlicht."
+        ),
+    ),
+    Page(
+        route="/project-nova/",
+        source="project-nova.html",
+        out="project-nova/index.html",
+        title="Project Nova – Experimentelle KI-gestützte Simulation",
+        description=(
+            "Project Nova ist ein experimentelles Android-Projekt im Bereich "
+            "KI-gestützter Simulation mit simulierten Entitäten. In Entwicklung, "
+            "noch nicht veröffentlicht."
+        ),
+    ),
+    Page(
+        route="/ai-game-assistant/",
+        source="ai-game-assistant.html",
+        out="ai-game-assistant/index.html",
+        title="AI Game Assistant – Bildschirmanalyse auf Android",
+        description=(
+            "Der AI Game Assistant ist ein experimentelles Android-Projekt zur "
+            "lokalen Analyse von Bildschirminhalten und kontextbezogener Assistenz. "
+            "In Entwicklung."
+        ),
+    ),
+    Page(
+        route="/karto/",
+        source="karto.html",
+        out="karto/index.html",
+        title="KARTO – Experimentelles Projekt im Web3-Umfeld",
+        description=(
+            "KARTO ist ein experimentelles Softwareprojekt im Umfeld von Web3 und "
+            "Solana mit Fokus auf technische Infrastruktur. In Entwicklung, nicht "
+            "öffentlich verfügbar."
+        ),
+    ),
+    Page(
         route="/impressum/",
         source="impressum.html",
         out="impressum/index.html",

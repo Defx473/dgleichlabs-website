@@ -80,6 +80,10 @@ ErrorDocument 404 /404.html
   RewriteRule ^index\.html$ / [R=301,L,NC]
   RewriteRule ^projekte/index\.html$ /projekte/ [R=301,L,NC]
   RewriteRule ^fieldpro/index\.html$ /fieldpro/ [R=301,L,NC]
+  RewriteRule ^dimitri-ai-studio/index\.html$ /dimitri-ai-studio/ [R=301,L,NC]
+  RewriteRule ^project-nova/index\.html$ /project-nova/ [R=301,L,NC]
+  RewriteRule ^ai-game-assistant/index\.html$ /ai-game-assistant/ [R=301,L,NC]
+  RewriteRule ^karto/index\.html$ /karto/ [R=301,L,NC]
   RewriteRule ^impressum/index\.html$ /impressum/ [R=301,L,NC]
   RewriteRule ^datenschutz/index\.html$ /datenschutz/ [R=301,L,NC]
 </IfModule>

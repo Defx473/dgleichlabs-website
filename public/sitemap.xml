@@ -19,6 +19,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://dgleichlabs.de/dimitri-ai-studio/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dgleichlabs.de/project-nova/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dgleichlabs.de/ai-game-assistant/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dgleichlabs.de/karto/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://dgleichlabs.de/impressum/</loc>
     <lastmod>2026-10-02</lastmod>
     <changefreq>yearly</changefreq>

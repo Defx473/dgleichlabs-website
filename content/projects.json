@@ -28,6 +28,8 @@
       "statusLabel": "In Entwicklung",
       "summary": "Werkzeuge rund um KI-gestützte Arbeitsabläufe. In Entwicklung – noch keine Veröffentlichung.",
       "areas": ["AI Tools", "Desktop"],
+      "detailUrl": "/dimitri-ai-studio/",
+      "detailLabel": "Projektseite ansehen",
       "published": true
     },
     {
@@ -37,6 +39,8 @@
       "statusLabel": "In Entwicklung",
       "summary": "Ein Software-Projekt in früher Entwicklung. Öffentliche Details folgen, sobald sie belastbar sind.",
       "areas": ["Mobile", "Plattform"],
+      "detailUrl": "/project-nova/",
+      "detailLabel": "Projektseite ansehen",
       "published": true
     },
     {
@@ -46,6 +50,8 @@
       "statusLabel": "In Entwicklung",
       "summary": "Experimentelles Android-Projekt zur visuellen Analyse von Bildschirminhalten und darauf aufbauenden Assistenzfunktionen. In Entwicklung – keine Veröffentlichung und keine Store-Verfügbarkeit.",
       "areas": ["Android", "Computer Vision", "Assistenz"],
+      "detailUrl": "/ai-game-assistant/",
+      "detailLabel": "Projektseite ansehen",
       "published": true
     },
     {
@@ -55,6 +61,8 @@
       "statusLabel": "In Entwicklung",
       "summary": "Technisches Entwicklungsprojekt im Solana-/Web3-Umfeld mit Fokus auf Blockchain-Integration und experimentelle Utility-Funktionen. In Entwicklung – nicht öffentlich verfügbar.",
       "areas": ["Web3", "Solana"],
+      "detailUrl": "/karto/",
+      "detailLabel": "Projektseite ansehen",
       "published": true
     },
     {

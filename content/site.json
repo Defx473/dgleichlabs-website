@@ -31,6 +31,10 @@
     { "path": "/", "file": "index.html", "priority": "1.0", "changefreq": "monthly" },
     { "path": "/projekte/", "file": "projekte/index.html", "priority": "0.8", "changefreq": "monthly" },
     { "path": "/fieldpro/", "file": "fieldpro/index.html", "priority": "0.8", "changefreq": "monthly" },
+    { "path": "/dimitri-ai-studio/", "file": "dimitri-ai-studio/index.html", "priority": "0.6", "changefreq": "monthly" },
+    { "path": "/project-nova/", "file": "project-nova/index.html", "priority": "0.6", "changefreq": "monthly" },
+    { "path": "/ai-game-assistant/", "file": "ai-game-assistant/index.html", "priority": "0.6", "changefreq": "monthly" },
+    { "path": "/karto/", "file": "karto/index.html", "priority": "0.6", "changefreq": "monthly" },
     { "path": "/impressum/", "file": "impressum/index.html", "priority": "0.3", "changefreq": "yearly" },
     { "path": "/datenschutz/", "file": "datenschutz/index.html", "priority": "0.3", "changefreq": "yearly" }
   ]
