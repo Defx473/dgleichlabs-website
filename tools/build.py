@@ -219,7 +219,160 @@ def render_nav(site: dict, active: str) -> str:
     return "\n".join(lines)
 
 
-def render_project_card(project: dict) -> str:
+# --------------------------------------------------------------------------
+# Projektmedien
+# --------------------------------------------------------------------------
+
+# Abstrakte Projektgrafik als reines Inline-SVG: bewusst geometrisch und ohne
+# Bezug zu echter Bedienoberflaeche. Sie ist KEIN Screenshot und sieht auch
+# nicht wie einer aus. Sobald in content/projects.json unter "media" ein
+# Bildpfad steht, wird stattdessen ein <img> mit alt-Text/Seitenverhaeltnis
+# eingesetzt - das Geruest (media-surface) bleibt identisch.
+MEDIA_ART = {
+    "fieldpro": "doc",
+    "dimitri-ai-studio": "desktop",
+    "project-nova": "nodes",
+    "ai-game-assistant": "vision",
+    "karto": "network",
+}
+
+MEDIA_ART_SVG = {
+    "desktop": (
+        '<svg class="media-art" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"'
+        ' role="presentation" focusable="false" aria-hidden="true">\n'
+        '              <rect class="media-panel" x="150" y="32" width="130" height="92" rx="12"/>\n'
+        '              <rect class="media-fill-accent" x="166" y="88" width="9" height="22" rx="4.5"/>\n'
+        '              <rect class="media-fill-accent" x="181" y="68" width="9" height="42" rx="4.5"/>\n'
+        '              <rect class="media-fill-accent" x="196" y="94" width="9" height="16" rx="4.5"/>\n'
+        '              <rect class="media-fill-accent" x="211" y="58" width="9" height="52" rx="4.5"/>\n'
+        '              <circle class="media-fill-2" cx="256" cy="56" r="15"/>\n'
+        '              <circle class="media-dot" cx="92" cy="60" r="7"/>\n'
+        '              <circle class="media-dot" cx="118" cy="116" r="7"/>\n'
+        '              <path class="media-stroke" d="M92 60 L118 116 L150 92"/>\n'
+        "            </svg>"
+    ),
+    "nodes": (
+        '<svg class="media-art" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"'
+        ' role="presentation" focusable="false" aria-hidden="true">\n'
+        '              <circle class="media-stroke-2" cx="176" cy="86" r="52"/>\n'
+        '              <path class="media-stroke" d="M176 34 L228 120 L128 122 Z"/>\n'
+        '              <circle class="media-fill-accent" cx="176" cy="34" r="11"/>\n'
+        '              <circle class="media-fill-a-soft" cx="128" cy="122" r="15"/>\n'
+        '              <circle class="media-fill-2" cx="228" cy="120" r="9"/>\n'
+        '              <circle class="media-dot" cx="176" cy="86" r="5"/>\n'
+        "            </svg>"
+    ),
+    "vision": (
+        '<svg class="media-art" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"'
+        ' role="presentation" focusable="false" aria-hidden="true">\n'
+        '              <path class="media-stroke-accent" d="M158 38 H140 a10 10 0 0 0 -10 10 V66"/>\n'
+        '              <path class="media-stroke-accent" d="M252 38 H270 a10 10 0 0 1 10 10 V66"/>\n'
+        '              <path class="media-stroke-accent" d="M158 150 H140 a10 10 0 0 1 -10 -10 V122"/>\n'
+        '              <path class="media-stroke-accent" d="M252 150 H270 a10 10 0 0 0 10 -10 V122"/>\n'
+        '              <rect class="media-fill-2-soft" x="170" y="91" width="70" height="6" rx="3"/>\n'
+        '              <circle class="media-stroke-2" cx="205" cy="94" r="30"/>\n'
+        '              <circle class="media-dot" cx="205" cy="94" r="6"/>\n'
+        "            </svg>"
+    ),
+    "network": (
+        '<svg class="media-art" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"'
+        ' role="presentation" focusable="false" aria-hidden="true">\n'
+        '              <path class="media-stroke" d="M124 64 L184 114 M184 114 L252 68"/>\n'
+        '              <path class="media-stroke-2" d="M124 64 L252 68"/>\n'
+        '              <circle class="media-fill-accent" cx="124" cy="64" r="12"/>\n'
+        '              <circle class="media-fill-2" cx="184" cy="114" r="12"/>\n'
+        '              <circle class="media-fill-a-soft" cx="252" cy="68" r="17"/>\n'
+        "            </svg>"
+    ),
+    "doc": (
+        '<svg class="media-art" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"'
+        ' role="presentation" focusable="false" aria-hidden="true">\n'
+        '              <rect class="media-panel" x="128" y="30" width="96" height="120" rx="12"/>\n'
+        '              <path class="media-stroke-accent" d="M148 62 l9 9 18 -20"/>\n'
+        '              <path class="media-stroke" d="M148 96 h56 M148 118 h38"/>\n'
+        '              <circle class="media-fill-2" cx="258" cy="56" r="18"/>\n'
+        "            </svg>"
+    ),
+    "generic": (
+        '<svg class="media-art" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"'
+        ' role="presentation" focusable="false" aria-hidden="true">\n'
+        '              <path class="media-stroke" d="M150 72 L222 112"/>\n'
+        '              <circle class="media-fill-accent" cx="150" cy="72" r="16"/>\n'
+        '              <circle class="media-fill-2" cx="222" cy="112" r="12"/>\n'
+        "            </svg>"
+    ),
+}
+
+MEDIA_MARKER = re.compile(r"\{\{\s*media:([a-z0-9-]+)\s*\}\}")
+
+
+def render_project_media(
+    project: dict, *, context: str = "detail", lazy: bool = True
+) -> str:
+    """Medienflaeche eines Projekts: echter Screenshot (falls hinterlegt)
+    oder abstrakte Platzhaltergrafik. Benoetigt kein JavaScript."""
+    media = project.get("media") or {}
+    name = project["name"]
+    category = " · ".join(project.get("areas", [])[:3])
+    art = MEDIA_ART.get(project.get("id"), "generic")
+    image = media.get("image")
+
+    classes = f"media-surface media-surface--{art}"
+    if context:
+        classes += f" media-surface--{context}"
+
+    caption = media.get("caption")
+    if image:
+        loading = " loading=\"lazy\"" if lazy else ""
+        width = media.get("width", 1600)
+        height = media.get("height", 900)
+        inner = (
+            f'<img src="{html.escape(image, quote=True)}" '
+            f'alt="{html.escape(media.get("alt", ""), quote=True)}" '
+            f'width="{width}" height="{height}"{loading}>'
+        )
+        attrs = ""
+    else:
+        classes += " media-surface--placeholder"
+        inner = (
+            MEDIA_ART_SVG[art]
+            + "\n              <span class=\"media-meta\">"
+            f'<span class="media-name">{html.escape(name)}</span>'
+            f'<span class="media-category">{html.escape(category)}</span></span>'
+        )
+        attrs = ' aria-hidden="true"'
+        if caption is None and context == "detail":
+            caption = "Abstrakte Projektfläche – noch kein Produktscreenshot."
+
+    figcaption = (
+        f'\n            <figcaption class="media-caption">{html.escape(caption)}</figcaption>'
+        if caption
+        else ""
+    )
+    return (
+        '          <figure class="project-media">\n'
+        f'            <span class="{classes}"{attrs}>\n'
+        f"              {inner}\n"
+        "            </span>"
+        f"{figcaption}\n"
+        "          </figure>"
+    )
+
+
+def render_media_markers(template: str, by_id: dict[str, dict], label: str) -> str:
+    """Ersetzt {{ media:<projekt-id> }} durch die Medienflaeche des Projekts."""
+
+    def replace(match: re.Match[str]) -> str:
+        key = match.group(1)
+        project = by_id.get(key)
+        if project is None:
+            sys.exit(f"FEHLER: {label} verweist auf unbekanntes Projekt '{key}'")
+        return render_project_media(project, context="detail", lazy=False)
+
+    return MEDIA_MARKER.sub(replace, template)
+
+
+def render_project_card(project: dict, *, with_media: bool = False) -> str:
     areas = "\n".join(
         f"            <li>{html.escape(area)}</li>" for area in project.get("areas", [])
     )
@@ -245,8 +398,13 @@ def render_project_card(project: dict) -> str:
     if project.get("featured", False):
         classes += " project-card-featured"
 
+    # Teaser zeigen eine dezente Medienflaeche; die kompakte Liste nicht, damit
+    # die Uebersicht schlank bleibt.
+    media = f"{render_project_media(project, context='card')}\n" if with_media else ""
+
     return (
         f'          <li class="{classes}">\n'
+        f"{media}"
         '            <div class="project-head">\n'
         f"              <h3>{html.escape(project['name'])}</h3>\n"
         f'              <span class="badge">{html.escape(project["statusLabel"])}</span>\n'
@@ -264,7 +422,9 @@ def published_projects(projects: dict) -> list[dict]:
     return [item for item in projects["projects"] if item.get("published", False)]
 
 
-def render_project_grid(projects: dict, limit: int | None = None) -> str:
+def render_project_grid(
+    projects: dict, limit: int | None = None, *, with_media: bool = False
+) -> str:
     items = published_projects(projects)
     if limit is not None:
         items = items[:limit]
@@ -273,7 +433,7 @@ def render_project_grid(projects: dict, limit: int | None = None) -> str:
             '          <li class="card"><h3>Noch nichts veröffentlicht</h3>'
             "<p>Aktuell ist kein Projekt öffentlich verfügbar.</p></li>"
         )
-    return "\n".join(render_project_card(item) for item in items)
+    return "\n".join(render_project_card(item, with_media=with_media) for item in items)
 
 
 # --------------------------------------------------------------------------
@@ -288,6 +448,7 @@ def build_files() -> dict[Path, str]:
     layout = read_text(SRC / "layout.html")
     url = site["url"]
     year = site["lastmod"][:4]
+    projects_by_id = {item["id"]: item for item in projects["projects"]}
 
     files: dict[Path, str] = {}
 
@@ -312,12 +473,16 @@ def build_files() -> dict[Path, str]:
             "canonical": url + page.route if page.route != "/404.html" else url + "/",
             "nav": render_nav(site, page.active_nav),
             "footerGithub": "",
-            "projectsTeaser": render_project_grid(projects, limit=2),
-            "projectsList": render_project_grid(projects),
+            "projectsTeaser": render_project_grid(projects, limit=2, with_media=True),
+            "projectsList": render_project_grid(projects, with_media=False),
         }
-        # Erst den Seiteninhalt aufloesen, dann in den Rahmen einsetzen:
-        # so funktionieren Marker (z. B. E-Mail, Claim) auch innerhalb der Seite.
-        body = render_markers(read_text(SRC / "pages" / page.source), values, page.out)
+        # Projektmedien zuerst einsetzen (eigener Marker), danach die uebrigen
+        # Marker aufloesen. So funktionieren Marker (z. B. E-Mail, Claim) auch
+        # innerhalb der Seite.
+        body = render_media_markers(
+            read_text(SRC / "pages" / page.source), projects_by_id, page.out
+        )
+        body = render_markers(body, values, page.out)
         values["body"] = body
         files[PUBLIC / page.out] = render_markers(layout, values, page.out)
 

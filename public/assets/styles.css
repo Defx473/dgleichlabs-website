@@ -452,6 +452,30 @@ ol {
   font-size: 0.98rem;
 }
 
+/* Zweispaltiger Seitenkopf mit Medienflaeche (Projekt-Detailseiten).
+   Mobil stapelt sich beides; die Medienflaeche skaliert ueber ihr
+   Seitenverhaeltnis und wird dadurch nicht zu hoch. */
+.hero-layout {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: start;
+}
+
+.hero-copy {
+  min-width: 0;
+}
+
+.hero-visual {
+  min-width: 0;
+}
+
+@media (min-width: 920px) {
+  .hero-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+    align-items: center;
+  }
+}
+
 /* ---------- Produktmarke (FieldPro) -------------------------------------- */
 
 /* Eigene Produktseiten zeigen ihre Marke ueber dem Seitenkopf. Die Kachel hat
@@ -473,6 +497,184 @@ ol {
 
 .product-mark svg {
   display: block;
+}
+
+/* ---------- Projektmedien ------------------------------------------------ */
+
+/* Wiederverwendbare Medienflaeche fuer Projektseiten, Teaser und Karten.
+   Solange kein echter Screenshot vorliegt, zeigt sie eine klar als abstrakt
+   erkennbare Grafik mit Projektname und Kategorie - kein grauer
+   "Bild fehlt"-Kasten. Sobald ein Projektbild vorliegt, wird dasselbe
+   Geruest mit einem <img> gefuellt (object-fit, kein Verzerren). */
+
+.project-media {
+  margin: 0;
+  display: block;
+}
+
+.media-surface {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background-color: var(--surface);
+  background-image:
+    radial-gradient(
+      120% 130% at 8% 0%,
+      color-mix(in srgb, var(--accent) 18%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      90% 120% at 100% 100%,
+      color-mix(in srgb, var(--accent-2) 15%, transparent),
+      transparent 62%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--border) 65%, transparent) 0 1px,
+      transparent 1px 28px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--border) 65%, transparent) 0 1px,
+      transparent 1px 28px
+    );
+  box-shadow: var(--shadow);
+}
+
+/* Sanfter Verlauf nur bei der abstrakten Platzhalterflaeche, damit Text
+   lesbar bleibt. Ein echtes Bild bleibt unveraendert. */
+.media-surface--placeholder::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 52%;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--bg) 80%, transparent),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.media-surface img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Formen der abstrakten Grafik - themeabhaengig ueber CSS-Variablen. */
+.media-panel {
+  fill: color-mix(in srgb, var(--surface-2) 85%, transparent);
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+}
+
+.media-fill-accent {
+  fill: var(--accent);
+}
+
+.media-fill-2 {
+  fill: var(--accent-2);
+}
+
+.media-fill-a-soft {
+  fill: color-mix(in srgb, var(--accent) 32%, transparent);
+}
+
+.media-fill-2-soft {
+  fill: color-mix(in srgb, var(--accent-2) 38%, transparent);
+}
+
+.media-dot {
+  fill: color-mix(in srgb, var(--text) 38%, transparent);
+}
+
+.media-stroke {
+  fill: none;
+  stroke: color-mix(in srgb, var(--text) 26%, transparent);
+  stroke-width: 2;
+}
+
+.media-stroke-accent {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.media-stroke-2 {
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.media-meta {
+  position: absolute;
+  z-index: 1;
+  left: clamp(1rem, 3vw, 1.6rem);
+  bottom: clamp(0.9rem, 3vw, 1.4rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-width: 82%;
+}
+
+.media-name {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.05rem, 2.4vw, 1.5rem);
+  line-height: 1.15;
+}
+
+.media-category {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.media-caption {
+  margin-top: 0.55rem;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+}
+
+/* Kompakte Variante in Projektkarten (Teaser). */
+.media-surface--card {
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+}
+
+.media-surface--card .media-meta {
+  left: 0.9rem;
+  bottom: 0.8rem;
+}
+
+.media-surface--card .media-name {
+  font-size: 1rem;
+}
+
+.media-surface--card .media-category {
+  font-size: 0.64rem;
+}
+
+.project-card .project-media {
+  margin-bottom: 0.15rem;
 }
 
 /* ---------- Cards -------------------------------------------------------- */

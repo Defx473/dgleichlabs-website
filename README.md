@@ -77,6 +77,7 @@ keine Verzeichnis-Auflistung.
 | Metadaten, Domain, E-Mail, Navigation | `content/site.json` |
 | Projekte | `content/projects.json` |
 | Aussehen | `public/assets/styles.css` |
+| Projektbilder | `public/assets/projects/<projekt-id>/` (siehe „Projektmedien") |
 | Sicherheits-Header / Weiterleitungen | `src/static/.htaccess` (Apache, netcup) |
 
 Nach jeder Änderung:
@@ -185,6 +186,7 @@ dgleichlabs-website/
 │  ├─ index.html, 404.html
 │  ├─ projekte/ impressum/ datenschutz/
 │  ├─ assets/               styles.css, favicon.svg, PNG-Icons, og.png
+│  │  └─ projects/          Projektbilder je Projekt (Platzhalterordner)
 │  ├─ robots.txt, sitemap.xml, site.webmanifest
 │  └─ .htaccess
 ├─ docs/DEPLOYMENT.md       Deployment auf netcup + DNS-Entscheidung
@@ -235,6 +237,40 @@ Projekte aus anderen Repositories einsammelt.
 Status-Werte für `statusLabel` sind frei wählbar, üblich sind „In Entwicklung“,
 „Pilotphase“ oder „Veröffentlicht“. **Keine** Store-Links, Downloadbuttons oder
 Preise, solange nichts veröffentlicht ist.
+
+### Projektmedien
+
+Jede Projektseite und jeder Teaser nutzt dieselbe Medienfläche
+(`.project-media` / `.media-surface` in `public/assets/styles.css`). Sie wird vom
+Generator erzeugt – nicht per Hand in `public/` gepflegt:
+
+- In `src/pages/*.html` steht `{{ media:<projekt-id> }}` an der Stelle der
+  Medienfläche (z. B. im Hero von `/dimitri-ai-studio/`).
+- `tools/build.py` löst diesen Marker über `content/projects.json` auf.
+- Dateien je Projekt liegen in `public/assets/projects/<projekt-id>/`
+  (Ordner sind angelegt).
+
+**Solange kein Bild hinterlegt ist**, zeigt die Komponente eine rein per CSS und
+Inline-SVG gezeichnete, klar **abstrakte** Fläche mit Projektname und Kategorie –
+kein grauer „Bild fehlt“-Kasten und **kein** erfundener Screenshot.
+
+**Echtes Bild ergänzen:** im Projekteintrag ein `media`-Objekt ergänzen, dann
+`tools/build.py` ausführen. Das `<img>` ersetzt automatisch den Platzhalter
+(gleiches Gerüst, `object-fit: cover`, festes Seitenverhältnis):
+
+```json
+"media": {
+  "image": "/assets/projects/mein-projekt/overview.png",
+  "alt": "Sachliche Beschreibung des Screenshots (nicht dekorativ).",
+  "caption": "Optional: Bildunterschrift.",
+  "width": 1600,
+  "height": 900
+}
+```
+
+Bilddateien in vernünftiger Größe und im Verhältnis 16:9 ablegen (z. B.
+1600 × 900). Unterhalb des sichtbaren Bereichs lädt der Teaser-Bildpfad mit
+`loading="lazy"`; die Hero-Fläche lädt absichtlich sofort.
 
 ## 9. Datenschutz im Design
 
