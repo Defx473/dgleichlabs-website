@@ -155,17 +155,24 @@ class OutcomeTests(unittest.TestCase):
 
 
 class RealProjectTests(unittest.TestCase):
-    """Der Gate gegen den echten Stand dieses Projekts."""
+    """Der Gate gegen den echten Stand dieses Projekts.
 
-    def test_current_public_tree_is_blocked(self) -> None:
+    Nach Abschluss der rechtlichen Freigabe ist der ausgelieferte Stand frei:
+    der Gate darf hier nichts mehr finden. Die Detektion selbst bleibt ueber die
+    synthetischen Tests oben scharf, damit ein Rueckfall auffaellt.
+    """
+
+    def test_current_public_tree_is_released(self) -> None:
         findings = gate.scan_directory(gate.ROOT / "public")
-        self.assertNotEqual(findings, [], "Erwartet: aktuell noch blockiert")
+        self.assertEqual(findings, [], f"Erwartet: freigegeben, offen: {findings}")
 
-    def test_only_expected_items_are_open(self) -> None:
-        """Blocker duerfen ausschliesslich die zwei lokalen Angaben sein.
+    def test_nothing_is_open_beyond_the_declared_allowlist(self) -> None:
+        """Nichts darf offen sein, was nicht ausdruecklich erlaubt ist.
 
-        So faellt sofort auf, wenn irgendwo ein vergessener Platzhalter steht -
-        der Gate bleibt dabei fuer neue, unbekannte Klammern scharf.
+        EXPECTED_OPEN ist nach der Freigabe leer. Der Vergleich bleibt erhalten,
+        damit ein bewusst geduldeter Hinweis an genau einer Stelle eingetragen
+        werden koennte, ohne diese Pruefung umzubauen - und damit ein irgendwo
+        vergessener Platzhalter sofort auffaellt.
         """
         findings = gate.scan_directory(gate.ROOT / "public")
         unexpected = [item for item in findings if item.text not in gate.EXPECTED_OPEN]
@@ -178,12 +185,12 @@ class RealProjectTests(unittest.TestCase):
                         if item.kind == "platzhalter"]
         self.assertEqual(placeholders, [], f"Noch offene Platzhalter: {placeholders}")
 
-    def test_both_legal_pages_are_blocked_for_the_review_marker(self) -> None:
+    def test_legal_pages_carry_no_review_marker(self) -> None:
+        """Der Pruefhinweis ist aus beiden Rechtstexten entfernt."""
         findings = gate.scan_directory(gate.ROOT / "public")
-        self.assertTrue(findings, "Erwartet: rechtliche Freigabe steht noch aus")
-        pages = {item.path.parent.name for item in findings}
-        self.assertEqual(pages, {"impressum", "datenschutz"})
-        self.assertEqual({item.kind for item in findings}, {"pruefhinweis"})
+        markers = [(item.label, item.path.parent.name) for item in findings
+                   if item.kind == "pruefhinweis"]
+        self.assertEqual(markers, [], f"Pruefhinweis noch vorhanden: {markers}")
 
     def test_gate_names_the_reason_when_only_the_marker_remains(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

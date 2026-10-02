@@ -63,10 +63,11 @@ KNOWN_PLACEHOLDERS = (
     "[E-MAIL-PROVIDER eintragen]",
 )
 
-# Was derzeit offen sein DARF. Steht hier nur der Pruefhinweis, sind alle
-# Sachangaben eingetragen und es fehlt ausschliesslich die menschliche bzw.
-# rechtliche Freigabe. Jede andere Fundstelle gilt als unerwartet.
-EXPECTED_OPEN = ("LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT",)
+# Was offen sein DARF. Nach der Freigabe ist das NICHTS mehr: jede Fundstelle
+# gilt als unerwartet. Die Liste bleibt trotzdem bestehen, damit ein einzelner
+# voruebergehend geduldeter Hinweis an genau einer Stelle eingetragen werden
+# kann, ohne diese Pruefung umzubauen - sie ist kein Freibrief fuer Platzhalter.
+EXPECTED_OPEN: tuple[str, ...] = ()
 
 # Offene Pruefhinweise: Text, der die Seite selbst als unfertig ausweist.
 FORBIDDEN_MARKERS = ("LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT",)
@@ -191,18 +192,22 @@ def report(findings: list[Finding], root: Path, verbose: bool) -> int:
         print("  Vorgehen:")
         print("   1. src/pages/impressum.html und src/pages/datenschutz.html ergänzen")
         print("      (echte Angaben eintragen, nichts erfinden).")
-        print("   2. python tools/build.py && python tools/check.py")
+        print("   2. Den Hinweis 'LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT'")
+        print("      erst danach aus beiden Seiten entfernen.")
+        print("   3. python tools/build.py && python tools/check.py")
+        print("   4. python tools/production_gate.py   # muss dann 0 liefern")
     else:
         print("  Warum das blockiert: Die Pflichtangaben stehen in der Seite, aber die")
         print("  rechtliche Prüfung ist laut Seitenhinweis noch nicht abgeschlossen.")
         print("  Der Deploy bleibt aus, bis diese Freigabe bewusst erteilt wird.")
         print()
         print("  Vorgehen:")
-        print("   1. Offene Entscheidungen abarbeiten (siehe README, 'Before Production').")
-    print("   3. Den Hinweis 'LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT'")
-    print("      erst danach aus beiden Seiten entfernen.")
-    print("   4. python tools/build.py && python tools/check.py")
-    print("   5. python tools/production_gate.py   # muss dann 0 liefern")
+        print("   1. Offene Punkte abarbeiten: README, Abschnitt 'Produktionsstatus',")
+        print("      und docs/DEPLOYMENT.md, Abschnitt 10.")
+        print("   2. Den Hinweis 'LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT'")
+        print("      erst danach aus beiden Seiten entfernen.")
+        print("   3. python tools/build.py && python tools/check.py")
+        print("   4. python tools/production_gate.py   # muss dann 0 liefern")
     return 1
 
 

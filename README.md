@@ -4,15 +4,17 @@ Statische Website der Entwickler-/Software-Marke **DGleich Labs**.
 
 | | |
 |---|---|
-| Domain | `dgleichlabs.de` (vorgesehen; noch **nicht** verbunden) |
+| Domain | `dgleichlabs.de` – **live**, HTTPS aktiv (Let's Encrypt) |
 | Kontakt | `info@dgleichlabs.de` |
 | Version | v0.1 |
 | Sprache | Deutsch (`<html lang="de">`), Claim englisch: „Software. Apps. Ideas.“ |
 | Rechtsform | Geschäftsbezeichnung eines **deutschen Einzelunternehmens** (keine GmbH/UG) |
 
-> Diese Website ist **nicht veröffentlicht**. Impressum und Datenschutz sind
-> Vorlagen mit Platzhaltern und **vor** einem Deployment rechtlich zu prüfen
-> (siehe „Before Production“).
+> Diese Website ist **veröffentlicht** und wird über das netcup-Webhosting
+> unter `https://dgleichlabs.de` ausgeliefert. Impressum und
+> Datenschutzerklärung beschreiben die tatsächlich eingesetzte Technik; der
+> frühere interne Prüfhinweis ist entfernt (Details: Abschnitt
+> „Produktionsstatus“).
 
 ## 1. Stack
 
@@ -125,10 +127,10 @@ Der Gate bricht ab, solange in `public/` noch
 steht. Code-Fragmente wie `["Mobile", "Plattform"]` oder
 `[aria-current="page"]` werden **nicht** fälschlich gemeldet.
 
-In der Pipeline läuft der Gate als **eigener Job vor dem Artefakt-Upload**
-(`production-gate` → `build` → `deploy`). Ist er rot, wird nichts hochgeladen
-und nichts veröffentlicht – ein roter Lauf bedeutet dort also ausdrücklich
-*nicht* „kaputt“, sondern *noch nicht freigegeben*.
+In der Pipeline läuft der Gate als **eigener Job vor dem Paket-Job**
+(`verify` → `production-gate` → `package`). Ist er rot, entsteht kein
+hochladbares Paket – ein roter Lauf bedeutet dort also ausdrücklich *nicht*
+„kaputt“, sondern *noch nicht freigegeben*.
 
 Lokal ist der Gate **nicht** Teil des Builds: `python tools/build.py` und
 `python tools/serve.py` funktionieren jederzeit.
@@ -242,62 +244,60 @@ Wenn später etwas davon hinzukommt (Fonts, Analytics, Formular, Karten, Videos)
   mit `rel="noopener noreferrer"` und klarem Ziel zu setzen.
 - `tools/serve.py` ist **nur** für die lokale Vorschau (bindet auf `127.0.0.1`).
 
-## 11. Before Production
+## 11. Produktionsstatus
 
-> **LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT**
-> Impressum und Datenschutzerklärung beschreiben die tatsächlich eingesetzte
-> Technik (Hosting bei netcup, Postfach bei STRATO). Der Hinweis bleibt stehen,
-> bis die unten aufgeführten Punkte entschieden und die Texte rechtlich geprüft
-> sind.
+Die Website ist **live**: `https://dgleichlabs.de` liefert den Inhalt von
+`public/` über das netcup-Webhosting aus. HTTP → HTTPS ist im
+Hosting-Control-Panel aktiviert; Let's Encrypt schützt `dgleichlabs.de` und
+`www.dgleichlabs.de`.
 
-**Personenbezogene Angaben sind eingetragen** (Name und ladungsfähige
-Geschäftsanschrift des Inhabers, übernommen aus der Gewerbeanmeldung; Details
-und Belege in `docs/LEGAL_SOURCES.md`). Es stehen **keine** Platzhalter mehr in
-der Seite – das Production Gate blockiert daher ausschließlich wegen des
-Prüfhinweises:
+**Legal Gate abgeschlossen:** Der interne Prüfhinweis
+`LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT` ist aus Impressum und
+Datenschutzerklärung entfernt. Die Punkte, die er offen hielt, sind final
+entschieden:
 
-- [ ] `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT` erst aus
-      `src/pages/impressum.html` und `src/pages/datenschutz.html` entfernen,
-      wenn alle Punkte unten entschieden sind
+- **Telefonnummer:** es wird **keine** angegeben; Kontakt ausschließlich über
+  `info@dgleichlabs.de`.
+- **Umsatzsteuer-Identifikationsnummer:** es wird **keine** angegeben. Wird
+  künftig eine erteilt und ist eine Angabe erforderlich, wird die Website
+  aktualisiert.
+- **Unternehmensform:** Geschäftsbezeichnung eines **Einzelunternehmens** –
+  keine GmbH, keine UG, keine Kapitalgesellschaft, kein Handelsregistereintrag.
+- **Technik:** rein statisch (HTML/CSS) – kein WordPress, keine Datenbank, kein
+  PHP, kein JavaScript, keine externen Fonts, keine Analyse-/Marketing-/
+  Trackingdienste, kein Kontaktformular. Solange dieser Zustand besteht, ist
+  **kein Cookie-Banner** erforderlich.
+- **Hosting:** netcup · **E-Mail-Postfach:** STRATO.
 
-**Geklärt (Hosting, 1. Oktober 2026)** – verifiziert und in den Text übernommen:
+Die früheren Hosting-Fakten bleiben dokumentiert: **AV-Vertrag mit netcup**
+(Art. 28 DSGVO, im CCP unter *Stammdaten → Auftragsverarbeitung* erstellt),
+**Log-Speicherdauer maximal 14 Tage** laut offizieller netcup-Dokumentation für
+Webhosting-Tarife mit Plesk, **Webstatistiken Deaktiviert**. Belege:
+`docs/LEGAL_SOURCES.md`.
 
-- [x] **AV-Vertrag mit netcup** (Art. 28 DSGVO): im CCP unter *Stammdaten →
-      Auftragsverarbeitung* bereits erstellt; Vertragspartner DGleich Labs und
-      netcup GmbH. Die Datenschutzerklärung verweist darauf, ohne Inhalte zu
-      zitieren.
-- [x] **Log-Speicherdauer**: laut offizieller netcup-Dokumentation für
-      Webhosting-Tarife mit Plesk **maximal 14 Tage**; Formulierung in
-      `src/pages/datenschutz.html` daran angeglichen.
-- [x] **Webstatistiken**: unter *Hosting-Einstellungen → Webstatistiken* als
-      **Deaktiviert** verifiziert; keine serverseitige Statistik aktiv.
-- [x] **TLS**: im temporären Hosting bewusst noch **kein** Zertifikat – kein
-      Fehler; Let's Encrypt erst nach Verbindung von `dgleichlabs.de`.
+Die Notbremse bleibt **scharf**: `tools/production_gate.py` erkennt den
+Prüfhinweis und jeden Platzhalter weiterhin, falls eines davon in den Text
+zurückkehrt. `EXPECTED_OPEN` ist jetzt leer – es darf **nichts** mehr offen sein.
 
-**DECISION REQUIRED** (bewusst nicht entschieden, nichts erfunden):
+**Weiterhin offen (Betrieb, nicht Recht):**
 
-- [ ] **Telefonnummer**: derzeit keine angegeben; Kontakt läuft ausschließlich über die E-Mail-Adresse. Für § 5 DDG ist eine schnelle elektronische Kontaktaufnahme erforderlich – ob die E-Mail-Adresse dafür genügt, ist die eigene Rechtsentscheidung.
-- [ ] **Umsatzsteuer**: keine USt-IdNr. angegeben. Klären, ob eine vorliegt oder ob die Kleinunternehmerregelung nach § 19 UStG greift; erst dann eintragen.
-- [ ] **Aufsichtsbehörde**: die Datenschutzerklärung benennt bewusst keine konkrete Behörde, sondern die Zuständigkeit des Sitz-Bundeslandes. Optional, aber üblich: die Behörde namentlich ergänzen.
-- [ ] **`.htaccess`-Auswertung**: bestätigen, dass der Tarif `.htaccess` auswertet (Header, Weiterleitungen, 404). Bei 500-Fehler nach dem Upload: Datei entfernen, Einstellungen über die Hosting-Einstellungen setzen.
-- [ ] **DNS-Variante**: entscheiden, ob nur der Web-Record auf netcup zeigt (Mail bleibt bei STRATO unangetastet) oder ob netcup Nameserver wird (dann müssen alle Mail-Records mitziehen).
+- [ ] **GitHub Pages stilllegen** – *Settings → Pages → Source: None*; sonst
+      bleibt eine zweite Auslieferung bestehen.
+- [ ] **`.htaccess`-Wirkung prüfen** – `curl -I https://dgleichlabs.de/` zeigt
+      CSP, `nosniff` und HSTS; `/_headers`, `/_redirects`, `/.nojekyll` liefern
+      404.
+- [ ] **Aufsichtsbehörde** optional namentlich nennen – bewusste
+      Einzelfallentscheidung, kein Blocker.
 
-Vor einer Veröffentlichung abzuarbeiten:
+**Nach jedem Re-Deploy prüfen:**
 
-- [ ] **Impressum vervollständigen und prüfen** – Datei `src/pages/impressum.html`
-- [ ] **Datenschutzerklärung prüfen** – Datei `src/pages/datenschutz.html`
-- [ ] `content/site.json`: `lastmod` und `legalStand` aktualisieren
-- [ ] **Domain im Webhosting verbinden** (`dgleichlabs.de`, optional `www`) – `docs/DEPLOYMENT.md`
-- [ ] **GitHub Pages stilllegen** – *Settings → Pages → Source: None*; sonst bleibt eine zweite Auslieferung bestehen
-- [ ] **HTTPS prüfen** (Let's Encrypt im Webhosting aktiv, Zertifikat gültig, automatische Verlängerung)
-- [ ] **`.htaccess`-Wirkung prüfen** – `curl -I https://dgleichlabs.de/` zeigt CSP, `nosniff`, HSTS; `/_headers`, `/_redirects`, `/.nojekyll` liefern 404
+- [ ] **Production Build prüfen**: `python tools/build.py --check && python tools/assets.py --check && python tools/check.py`
+- [ ] **Production Gate grün bekommen**: `python tools/production_gate.py` muss `0` liefern
+- [ ] **`.htaccess`-Wirkung prüfen** – `curl -I https://dgleichlabs.de/` zeigt CSP, `nosniff`, HSTS
 - [ ] **Kontaktadresse testen** – E-Mail an `info@dgleichlabs.de`, Zustellung und Antwortadresse prüfen
 - [ ] **Mobile QA** auf echtem Gerät (iOS + Android), Schriftgrößen, Zoom, Querformat
 - [ ] Tastatur-/Screenreader-Kurztest (Tab-Reihenfolge, Skip-Link, Fokus sichtbar)
-- [ ] **Production Gate grün bekommen**: `python tools/production_gate.py` muss `0` liefern – erst dann darf deployt werden
-- [ ] **Production Build prüfen**: `python tools/build.py --check && python tools/assets.py --check && python tools/check.py`
 - [ ] `sitemap.xml`/`robots.txt` auf der Live-Domain erreichbar
-- [ ] Lighthouse/„Page Speed“ einmal gegen die Live-URL laufen lassen
 - [ ] Optional: GitHub-Link im Footer ergänzen (dann `githubUrl` in `content/site.json` **und** `footerGithub` in `tools/build.py` füllen)
 
 ## 12. Lizenz

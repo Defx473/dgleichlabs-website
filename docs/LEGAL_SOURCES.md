@@ -8,6 +8,13 @@ Abrufdatum der Quellen: **28. September 2026** – netcup-Quellen (Abschnitt 2):
 **1. Oktober 2026** (dort auch die vom Betreiber im netcup-Panel verifizierten
 Angaben zu AV-Vertrag, Log-Speicherdauer und Webstatistiken)
 
+> **Status (2. Oktober 2026):** Die Website ist live. Der frühere interne
+> Prüfhinweis `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT` ist aus
+> Impressum und Datenschutzerklärung **entfernt**. Die Betreiberentscheidungen,
+> die er offen hielt (Telefonnummer, Umsatzsteuer-Identifikationsnummer), sind
+> **abschließend getroffen** und im Text sachlich umgesetzt – nicht als offene
+> Punkte. Details in den Abschnitten 5 und 6a.
+
 ## 1. Was die Website tatsächlich tut (technisch geprüft)
 
 | Aussage in der Datenschutzerklärung | Prüfung |
@@ -129,9 +136,9 @@ Anschrift, schnelle elektronische Kontaktaufnahme und unmittelbare Kommunikation
 | Inhaber (vollständiger Name) | eingetragen – Quelle: lokale Gewerbeanmeldung (Datei siehe unten) |
 | Ladungsfähige Anschrift | eingetragen – Quelle: lokale Gewerbeanmeldung (Datei siehe unten) |
 | E-Mail-Adresse | eingetragen |
-| Telefonnummer | nicht angegeben – **DECISION REQUIRED**, siehe unten |
+| Telefonnummer | nicht angegeben – **entschieden**: keine Nummer, Kontakt nur über E-Mail (siehe unten) |
 | Handelsregister | nicht vorhanden, korrekt als „besteht nicht“ ausgewiesen |
-| USt-IdNr. | nicht angegeben – **DECISION REQUIRED**, siehe unten |
+| USt-IdNr. | nicht angegeben – **entschieden**: derzeit keine Angabe (siehe unten) |
 
 **Herkunft der personenbezogenen Angaben:** `~/Downloads/Gewerbe - Ummeldung (PDF).pdf`
 (Gewerbeanmeldung/Gewerbeummeldung der zuständigen Verbandsgemeinde, Datum im
@@ -149,15 +156,18 @@ Es existieren drei Exporte derselben Anmeldung im Download-Ordner
 (`…(1).pdf`, `…(2).pdf`, `….pdf`). Sie stimmen in den hier verwendeten Angaben
 überein; maßgeblich war `….pdf`.
 
-**Telefonnummer:** § 5 Abs. 1 Nr. 2 DDG verlangt Angaben, die eine schnelle
-elektronische Kontaktaufnahme und unmittelbare Kommunikation ermöglichen,
-einschließlich der E-Mail-Adresse. Ob die E-Mail-Adresse allein genügt oder eine
-Telefonnummer nötig ist, ist eine Rechtsfrage und **nicht** automatisch zu
-entscheiden – deshalb steht auf der Seite keine erfundene Nummer.
+**Telefonnummer (entschieden):** § 5 Abs. 1 Nr. 2 DDG verlangt Angaben, die
+eine schnelle elektronische Kontaktaufnahme und unmittelbare Kommunikation
+ermöglichen, einschließlich der E-Mail-Adresse. **Betreiberentscheidung:** Es
+wird **keine** Telefonnummer angegeben; die Kontaktaufnahme läuft ausschließlich
+über `info@dgleichlabs.de`. Auf der Seite steht daher keine Nummer – und
+insbesondere **nicht** die im Gewerbeformular vorhandene private Nummer.
 
-**Umsatzsteuer:** Die Seite benennt keine USt-IdNr. und keine
-Kleinunternehmerregelung. Beides darf erst eingetragen werden, wenn es
-tatsächlich zutrifft.
+**Umsatzsteuer (entschieden):** **Betreiberentscheidung:** Es wird derzeit
+**keine** USt-IdNr. angegeben. Wird künftig eine erteilt und ist eine Angabe
+erforderlich, wird die Website aktualisiert. Die Seite benennt daher weder
+USt-IdNr. noch Kleinunternehmerregelung; beides darf erst eingetragen werden,
+wenn es tatsächlich zutrifft.
 
 **Verantwortlich für den Inhalt (§ 18 Abs. 2 MStV):** bewusst **nicht**
 aufgeführt, weil die Website keine journalistisch-redaktionellen Inhalte
@@ -169,7 +179,8 @@ Angabe zu ergänzen.
 In der Datenschutzerklärung wird **keine** konkrete Aufsichtsbehörde genannt,
 sondern die Zuständigkeit des Bundeslandes beschrieben, in dem der
 Verantwortliche seinen Sitz hat. Eine namentliche Nennung wäre möglich, ist aber
-eine bewusste Einzelfallentscheidung und steht als offener Punkt im README.
+eine bewusste Einzelfallentscheidung und im README als **optionaler
+Betriebspunkt** geführt – kein Blocker für die Veröffentlichung.
 
 ## 6a. Weitere bewusste Entscheidungen im Text
 
@@ -183,7 +194,7 @@ eine bewusste Einzelfallentscheidung und steht als offener Punkt im README.
   Reichweitenmessung (nachweisbar über `tools/check.py` und den fehlenden
   Drittanbieter-Code).
 - **Telefonnummer:** Es wird keine genannt – auch nicht die im Formular
-  vorhandene private Nummer.
+  vorhandene private Nummer (abschließende Betreiberentscheidung, Abschnitt 5).
 
 ## 7. Was dieses Dokument nicht ist
 

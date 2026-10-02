@@ -5,12 +5,17 @@ vorhandene **netcup Webhosting (Tarif „Webhosting 1000 NUE“)** unter
 `https://dgleichlabs.de` ausgeliefert. Auslieferungsort ist das
 Web-Verzeichnis **`httpdocs`** der Domain im Webhosting-Account.
 
-> **STATUS: NICHT DURCHGEFÜHRT – reine Vorbereitung.**
-> Es wurde **kein** FTP-/SFTP-/SSH-Upload durchgeführt, **keine** Datei auf dem
-> netcup-Server verändert, **keine** DNS-Einstellung geändert, **kein**
-> Nameserver umgestellt und **keine** Zugangsdaten gespeichert. Dieses Dokument
-> beschreibt die Schritte und benennt jede Stelle, an der eine ausdrückliche
-> Freigabe nötig ist.
+> **STATUS: LIVE (Stand 2. Oktober 2026).** Der Inhalt von `public/` wird unter
+> `https://dgleichlabs.de` ausgeliefert. HTTPS ist über Let's Encrypt für
+> `dgleichlabs.de` und `www.dgleichlabs.de` aktiv; HTTP → HTTPS ist im
+> Hosting-Control-Panel aktiviert. Das Deployment-Archiv wurde nach dem
+> Entpacken vom Server gelöscht.
+>
+> Weiterhin **freigabepflichtig** und nichts automatisiert: jede weitere
+> DNS-Änderung, jede Nameserver-Umstellung, jede Änderung an MX/TXT/SPF/DKIM/
+> DMARC sowie jeder erneute Upload (Abschnitt 9). Zugangsdaten liegen **nicht**
+> im Repository. Dieser Abschnitt ist die Aufzeichnung des Wegs – die Schritte
+> unten bleiben als nachvollziehbarer Verlauf erhalten.
 
 **Rahmen (vom Betreiber vorgegeben):**
 
@@ -122,18 +127,20 @@ nebeneinander existieren:
    Webhosting-Einstellungen als Domain anlegen, `httpdocs` prüfen.
    Doku dazu: netcup Helpcenter „Domain mit Webhosting verbinden“.
 6. **TLS sicherstellen** – SSL über Let's Encrypt im Webhosting (Helpcenter
-   „SSL-Verschlüsselung mit Let's Encrypt“). Erst danach HSTS-Wirkung prüfen.
-   *Hinweis:* Solange `dgleichlabs.de` noch nicht mit dem Webhosting verbunden
-   ist, ist im temporären Hosting bewusst **noch kein Zertifikat** ausgewählt.
-   Das ist **kein Fehler** und wird jetzt **nicht** geändert. Das Zertifikat
-   (Let's Encrypt) wird erst eingerichtet, nachdem die Domain mit dem Webhosting
-   verbunden ist.
-7. **Upload** – Inhalt von `public/` nach `httpdocs/`. Weg (FTP/SFTP/Dateimanager)
-   ist eine **DECISION REQUIRED**-Entscheidung des Betreibers; siehe Abschnitt 5.
+   „SSL-Verschlüsselung mit Let's Encrypt“). **Erledigt:** Das Zertifikat deckt
+   `dgleichlabs.de` und `www.dgleichlabs.de` ab, HTTP → HTTPS ist im
+   Hosting-Control-Panel aktiviert. *Verlauf:* Im temporären Hosting war zuvor
+   bewusst **noch kein** Zertifikat ausgewählt – das war kein Fehler, sondern
+   der Zustand vor dem Verbinden der Domain.
+7. **Upload** – Inhalt von `public/` nach `httpdocs/`. **Erledigt**; der Weg
+   (FTP/SFTP oder Dateimanager) war eine Betreiberentscheidung (Abschnitt 5).
+   Das Archiv wurde nach dem Entpacken vom Server gelöscht.
 8. **Abnahme** – Checkliste in Abschnitt 6.
-9. **Erst danach** – den Legal-/Go-Live-Marker entfernen und `lastmod` in
-   `content/site.json` aktualisieren. Der Marker ist die letzte Station, nicht
-   die erste.
+9. **Erst danach** – Legal-/Go-Live-Hinweis entfernen und `lastmod` in
+   `content/site.json` aktualisieren. **Erledigt:** Der Prüfhinweis ist aus
+   Impressum und Datenschutz entfernt, `lastmod` steht auf `2026-10-02`. Die
+   Notbremse (`tools/production_gate.py`) bleibt aktiv und erkennt einen
+   Rückfall.
 
 **Reihenfolge-Warnung:** Schritt 4 (Pages stilllegen) und Schritt 7 (Upload)
 dürfen sich nicht überlappen, ohne dass die Domain eindeutig zeigt. Es gibt
@@ -195,12 +202,10 @@ das sind Quellen bzw. Repository-Dateien.
 | Kontakt | Testmail an `info@dgleichlabs.de` | Zustellung unverändert (STRATO) |
 | Mobile QA | echtes Gerät, 320 px, Querformat | lesbar, keine Überläufe |
 
-## 7. DNS – offene Entscheidung, kein Rechenschritt
+## 7. DNS – Aufzeichnung der Entscheidung
 
-Die Domain `dgleichlabs.de` und das Postfach `info@dgleichlabs.de` laufen
-weiterhin über **STRATO**. Damit die Website auf netcup ausgeliefert wird, gibt
-es zwei Wege – **beide sind eine bewusste Entscheidung des Betreibers und in
-diesem Auftrag nicht durchgeführt:**
+Die Domain `dgleichlabs.de` und das Postfach `info@dgleichlabs.de` liegen bei
+**STRATO**. Damit die Website auf netcup ausgeliefert wird, gab es zwei Wege:
 
 | Variante | Was passiert | Risiko |
 |---|---|---|
@@ -215,10 +220,15 @@ diesem Auftrag nicht durchgeführt:**
 3. Den netcup-Zielhost aus dem Webhosting-Interface ablesen (nicht raten, nicht
    aus fremden Quellen übernehmen).
 
-**DECISION REQUIRED:** welcher der beiden Wege gegangen wird, und welcher
-Web-Record-Wert (A/AAAA) für die Webhosting-Instanz gilt. Dieser Wert steht hier
-absichtlich **nicht**, weil er ohne Einsicht in das netcup-Panel nicht belegt
-werden kann.
+**Entschieden und umgesetzt:** Die Domain liefert inzwischen von netcup aus
+(`https://dgleichlabs.de` ist live), das Postfach `info@dgleichlabs.de` bleibt
+bei **STRATO**. Welche der beiden Varianten dabei konkret gewählt wurde, ist
+hier **nicht** dokumentiert. Sollte Variante B (netcup-Nameserver) verwendet
+worden sein, ist zusätzlich sicherzustellen, dass **alle** Mail-Records (MX,
+SPF, DKIM, DMARC) mitgezogen wurden – sonst bricht `info@dgleichlabs.de`. Das
+ist ein Betriebspunkt, kein Rechtsblocker (Abschnitt 10). Der konkrete
+A/AAAA-Zielwert steht hier weiterhin **nicht**, weil er ohne Einsicht in das
+netcup-Panel nicht belegt werden kann.
 
 **Regeln für beide Varianten:** keine MX-, TXT-, SPF- oder DKIM-Records ändern
 oder löschen; **niemals** einen Wildcard-Record (`*`) anlegen; ein vorhandener
@@ -251,9 +261,9 @@ wird.
 7. PHP, Datenbank, WordPress oder zusätzliche Dienste im Webhosting aktivieren –
    die Website braucht keine davon.
 
-## 10. Offene Punkte für den Betreiber (DECISION REQUIRED)
+## 10. Status und offene Punkte für den Betreiber
 
-**Erledigt und verifiziert (Stand: 1. Oktober 2026):**
+**Erledigt und verifiziert (Stand: 1.–2. Oktober 2026):**
 
 - [x] **AV-Vertrag mit netcup** (Art. 28 DSGVO) – liegt vor: im netcup CCP
       unter *Stammdaten → Auftragsverarbeitung* ist die Vereinbarung bereits
@@ -270,21 +280,33 @@ wird.
       Webstatistiken* als **Deaktiviert** verifiziert; derzeit ist **keine**
       optionale serverseitige Plesk-Webstatistik aktiv. In der
       Datenschutzerklärung so benannt.
-- [x] **TLS im temporären Hosting** – noch **kein** Zertifikat ausgewählt. Das
-      ist gewollt und wird **nicht** geändert; Let's Encrypt folgt erst nach dem
-      Verbinden von `dgleichlabs.de` mit dem Webhosting (Abschnitt 4, Schritt 6).
+- [x] **Domain verbunden und live** – `https://dgleichlabs.de` liefert den
+      Inhalt von `public/` aus; HTTP → HTTPS ist im Hosting-Control-Panel aktiv.
+- [x] **TLS aktiv** – Let's Encrypt schützt `dgleichlabs.de` und
+      `www.dgleichlabs.de` (Abschnitt 4, Schritt 6).
+- [x] **Upload durchgeführt** – Inhalt von `public/` liegt in `httpdocs/`; das
+      Deployment-Archiv wurde nach dem Entpacken vom Server gelöscht.
+- [x] **Legal-Gate abgeschlossen** – der Prüfhinweis
+      `LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT` ist aus Impressum und
+      Datenschutzerklärung entfernt; `EXPECTED_OPEN` im Production-Gate ist leer.
+      Die Notbremse selbst bleibt aktiv und erkennt einen Rückfall.
+- [x] **Sachangaben final** – keine Telefonnummer, keine USt-IdNr.,
+      Einzelunternehmen (keine GmbH/UG, kein Handelsregister). Die Angaben
+      stehen im Text und werden nicht als offene Entscheidung geführt.
 
-**Weiterhin offen:**
+**Weiterhin offen (Betrieb, kein Rechtsblocker):**
 
-- [ ] **Upload-Weg** festlegen: FTP/SFTP oder Dateimanager.
-- [ ] **DNS-Variante** festlegen (A-Record auf netcup vs. netcup-Nameserver) und
-      den Ziel-Record aus dem netcup-Panel ablesen.
 - [ ] **GitHub Pages stilllegen** (Settings → Pages → Source: None) und die
-      Custom Domain dort entfernen.
-- [ ] **`.htaccess`-Auswertung** im Tarif bestätigen (`AllowOverride`); bei 500
-      die Datei entfernen und Header über „Hosting-Einstellungen“ setzen.
-- [ ] **TLS aktivieren** (Let's Encrypt), sobald die Domain mit dem Webhosting
-      verbunden ist, und danach die Header/HSTS-Wirkung prüfen.
+      Custom Domain dort entfernen – sonst bleibt eine zweite Auslieferung
+      bestehen.
+- [ ] **Mail-Records prüfen**, falls netcup als Nameserver eingesetzt wurde
+      (Abschnitt 7, Variante B): MX, SPF, DKIM, DMARC müssen mitgezogen sein.
+- [ ] **`.htaccess`-Wirkung bestätigen** – `curl -I https://dgleichlabs.de/`
+      zeigt CSP, `nosniff` und HSTS; `/_headers`, `/_redirects`, `/.nojekyll`
+      liefern 404. Bei 500 die Datei entfernen und Header über
+      „Hosting-Einstellungen“ setzen.
+- [ ] **Aufsichtsbehörde** optional namentlich nennen (bewusste
+      Einzelfallentscheidung, kein Blocker).
 
 Details, Belege und der Stand der Rechtstexte: `docs/LEGAL_SOURCES.md` und
 `README.md`, Abschnitt „Before Production“.
