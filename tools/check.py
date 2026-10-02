@@ -43,8 +43,7 @@ REQUIRED_FILES = [
     "robots.txt",
     "sitemap.xml",
     "site.webmanifest",
-    "_headers",
-    "_redirects",
+    ".htaccess",
     "assets/styles.css",
     "assets/favicon.svg",
     "assets/favicon-32.png",
@@ -353,23 +352,64 @@ def check_css(problems: list[str]) -> None:
         problems.append("styles.css: 'all: unset' gefunden (Barrierefreiheit prüfen)")
 
 
-def check_headers(problems: list[str]) -> None:
-    raw = (PUBLIC / "_headers").read_text(encoding="utf-8")
-    # Nur echte Header-Zeilen pruefen - Kommentare erklaeren Entscheidungen.
+# Hoster-Dateien, die GitHub Pages bzw. Cloudflare Pages vorausgesetzt haben.
+# Sie werden von netcup/Plesk nicht ausgewertet und duerfen deshalb nicht mehr
+# im Auslieferungsstand liegen - sonst waeren sie wirkungslos UND zusaetzlich
+# oeffentlich als Textdatei abrufbar.
+DEPRECATED_HOSTING_FILES = ("_headers", "_redirects", ".nojekyll")
+
+
+def check_hosting_config(problems: list[str]) -> None:
+    """Sicherheits-Header und Weiterleitungen fuer Apache (netcup-Webhosting).
+
+    Quelle der Regeln ist src/static/.htaccess, ausgeliefert als /.htaccess im
+    httpdocs-Verzeichnis. Geprueft wird, dass die frueheren Cloudflare-Pages-
+    Dateien verschwunden sind und die Apache-Datei die geforderten Regeln
+    weiterhin enthaelt.
+    """
+    for name in DEPRECATED_HOSTING_FILES:
+        if (PUBLIC / name).is_file():
+            problems.append(
+                f"{name}: veraltete Pages-Datei in public/ – fuer netcup gilt .htaccess "
+                "(siehe docs/DEPLOYMENT.md)"
+            )
+
+    path = PUBLIC / ".htaccess"
+    if not path.is_file():
+        problems.append(".htaccess fehlt – Header/Weiterleitungen waeren beim Hoster wirkungslos")
+        return
+
+    raw = path.read_text(encoding="utf-8")
+    # Nur echte Direktiven pruefen - Kommentare erklaeren Entscheidungen.
     active = "\n".join(
         line for line in raw.splitlines() if line.strip() and not line.lstrip().startswith("#")
     )
     for required in (
-        "Content-Security-Policy:",
-        "X-Content-Type-Options: nosniff",
-        "Referrer-Policy:",
+        "Content-Security-Policy",
+        "default-src 'none'",
+        "script-src 'none'",
         "frame-ancestors 'none'",
-        "Strict-Transport-Security:",
+        'X-Content-Type-Options "nosniff"',
+        "Referrer-Policy",
+        "Strict-Transport-Security",
+        "ErrorDocument 404 /404.html",
+        "DirectoryIndex index.html",
+        "Options -Indexes",
     ):
         if required not in active:
-            problems.append(f"_headers: '{required}' fehlt")
+            problems.append(f".htaccess: '{required}' fehlt")
     if "includeSubDomains" in active:
-        problems.append("_headers: HSTS includeSubDomains bewusst nicht setzen")
+        problems.append(".htaccess: HSTS includeSubDomains bewusst nicht setzen")
+    if "Header always set" not in active:
+        problems.append(".htaccess: keine Header gesetzt (Header always set fehlt)")
+    if "www\\.dgleichlabs\\.de" not in active:
+        problems.append(".htaccess: www-Weiterleitung auf die Hauptdomain fehlt")
+    canonical = ("^index\\.html$",) + tuple(
+        f"^{name}/index\\.html$" for name in ("projekte", "fieldpro", "impressum", "datenschutz")
+    )
+    for rule in canonical:
+        if rule not in active:
+            problems.append(f".htaccess: kanonische Weiterleitung {rule} fehlt")
 
 
 def check_secrets(problems: list[str]) -> None:
@@ -412,15 +452,30 @@ def check_production_gate(problems: list[str]) -> None:
         problems.append("production_gate.py fehlt – Deploy waere nicht blockiert")
         return
 
-    workflow = ROOT / ".github" / "workflows" / "pages.yml"
+    workflow = ROOT / ".github" / "workflows" / "ci.yml"
     if not workflow.is_file():
-        problems.append("pages.yml fehlt – Deployment nicht nachvollziehbar")
+        problems.append("ci.yml fehlt – Prueflauf nicht nachvollziehbar")
         return
     text = workflow.read_text(encoding="utf-8")
     if "tools/production_gate.py" not in text:
-        problems.append("pages.yml ruft production_gate.py nicht auf – Notbremse nicht verdrahtet")
+        problems.append("ci.yml ruft production_gate.py nicht auf – Notbremse nicht verdrahtet")
     if "needs: production-gate" not in text:
-        problems.append("pages.yml: Artefakt-Upload haengt nicht am production-gate")
+        problems.append("ci.yml: das Paket haengt nicht am production-gate")
+
+    # GitHub Pages ist nicht mehr das Production-Hosting: kein Workflow darf
+    # einen Pages-Deploy enthalten, sonst gaebe es ein versehentliches zweites
+    # Deployment neben netcup.
+    for path in sorted((ROOT / ".github" / "workflows").glob("*.yml")):
+        content = path.read_text(encoding="utf-8")
+        for forbidden in (
+            "actions/configure-pages",
+            "actions/upload-pages-artifact",
+            "actions/deploy-pages",
+        ):
+            if forbidden in content:
+                problems.append(
+                    f"{path.name}: {forbidden} – GitHub-Pages-Deployment nicht mehr erwünscht"
+                )
 
     tests = ROOT / "tools" / "tests" / "test_production_gate.py"
     if not tests.is_file():
@@ -467,7 +522,7 @@ def main() -> int:
     check_sitemap_and_robots(pages, problems)
     check_asset_dimensions(problems, notices)
     check_css(problems)
-    check_headers(problems)
+    check_hosting_config(problems)
     check_secrets(problems)
     check_production_gate(problems)
     check_freshness(problems, notices)

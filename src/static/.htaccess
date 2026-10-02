@@ -1,0 +1,85 @@
+# DGleich Labs – Apache-Konfiguration für das netcup-Webhosting
+# ===========================================================================
+# Diese Datei wird mit dem Inhalt von public/ nach httpdocs/ hochgeladen und
+# liegt dort als /.htaccess. Sie ersetzt die früheren Cloudflare-Pages-Dateien
+# _headers (Sicherheits-Header) und _redirects (Weiterleitungen), die auf
+# netcup/Plesk nicht ausgewertet werden. Zuordnung und Migrationsplan:
+# docs/DEPLOYMENT.md.
+#
+# Zwei bewusste Einschränkungen, damit hier nichts erfunden wird:
+#
+#   1. Jeder Block steht in einer <IfModule>-Prüfung. Fehlt ein Apache-Modul
+#      im Tarif, wird der Block übersprungen statt einen 500-Fehler zu erzeugen.
+#   2. Es wird NICHT angenommen, dass .htaccess im Tarif ausgewertet wird
+#      (AllowOverride). Ob die Datei wirkt, ist vor dem ersten Upload zu prüfen
+#      – siehe "Nach dem ersten Upload prüfen" in docs/DEPLOYMENT.md. Erzeugt
+#      die Website nach dem Upload einen 500-Fehler, wertet der Tarif .htaccess
+#      nicht aus: Datei entfernen und die Einstellungen stattdessen im
+#      Webhosting-Interface unter "Hosting-Einstellungen" setzen.
+#
+# Kein WordPress, keine Datenbank, kein PHP: Es wird ausschließlich statisches
+# HTML/CSS ausgeliefert.
+
+# --- Grundverhalten ---------------------------------------------------------
+
+# Keine Verzeichnisauflistung.
+Options -Indexes
+
+# Verzeichnisse werden über index.html bedient (wie beim lokalen Vorschau-Server).
+DirectoryIndex index.html
+
+AddDefaultCharset UTF-8
+
+# Gestaltete 404-Seite statt der Server-Standardseite.
+ErrorDocument 404 /404.html
+
+# Versteckte Dateien (z. B. .htaccess selbst oder Editor-Reste) nicht ausliefern.
+<IfModule mod_authz_core.c>
+  <FilesMatch "^\.">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+# --- Sicherheits-Header -----------------------------------------------------
+# Inhaltlich identisch mit der früheren Cloudflare-Pages-Datei _headers:
+# Die Website liefert kein JavaScript aus, daher darf die CSP script-src auf
+# 'none' setzen. HSTS wird ABSICHTLICH ohne includeSubDomains gesetzt, damit
+# spätere Subdomains (z. B. Mail-Dienste) nicht ungewollt mitbetroffen sind.
+
+<IfModule mod_headers.c>
+  Header always set Content-Security-Policy "default-src 'none'; base-uri 'none'; form-action 'none'; script-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; manifest-src 'self'; connect-src 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-origin"
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Robots-Tag "index, follow"
+
+  # Statische Assets lang cachen. HTML wird bewusst NICHT lang gecacht, damit
+  # Änderungen sofort sichtbar sind.
+  <FilesMatch "\.(?:css|png|svg|ico|webmanifest)$">
+    Header always set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# --- Weiterleitungen --------------------------------------------------------
+# Entspricht der früheren _redirects-Datei: nur additive, kanonische Varianten.
+# Es werden keine Pfade versteckt oder umgebogen.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # www -> Hauptdomain (wirkt erst, wenn www tatsächlich verbunden ist).
+  RewriteCond %{HTTP_HOST} ^www\.dgleichlabs\.de$ [NC]
+  RewriteRule ^(.*)$ https://dgleichlabs.de/$1 [R=301,L]
+
+  # index.html-Varianten auf die kanonische Route.
+  RewriteRule ^index\.html$ / [R=301,L,NC]
+  RewriteRule ^projekte/index\.html$ /projekte/ [R=301,L,NC]
+  RewriteRule ^fieldpro/index\.html$ /fieldpro/ [R=301,L,NC]
+  RewriteRule ^impressum/index\.html$ /impressum/ [R=301,L,NC]
+  RewriteRule ^datenschutz/index\.html$ /datenschutz/ [R=301,L,NC]
+</IfModule>

@@ -4,9 +4,13 @@
 Bildet das Verhalten des spaeteren statischen Hostings nach:
 
     - liefert public/ als Wurzel aus
-    - /pfad/ -> /pfad/index.html (wie Cloudflare Pages / GitHub Pages)
-    - unbekannte Pfade -> public/404.html mit HTTP 404
-    - keine Verzeichnis-Auflistung, keine Traversierung ausserhalb von public/
+    - /pfad/ -> /pfad/index.html (DirectoryIndex, wie Apache/netcup)
+    - unbekannte Pfade -> public/404.html mit HTTP 404 (wie ErrorDocument 404)
+    - keine Verzeichnis-Auflistung (wie "Options -Indexes"),
+      keine Traversierung ausserhalb von public/
+
+Hinweis: Die Sicherheits-Header und Weiterleitungen aus public/.htaccess bildet
+ dieser Server NICHT nach - das ist Aufgabe des Hostings (Apache).
 
 Aufruf:
     python tools/serve.py                # http://127.0.0.1:8788

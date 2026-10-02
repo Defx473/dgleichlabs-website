@@ -11,9 +11,11 @@
           <p class="callout-title">LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT</p>
           <p>
             Diese Erklärung beschreibt die <strong>tatsächlich eingesetzte</strong>
-            Technik dieser Website. Der Hinweis bleibt stehen, bis die rechtliche
-            Prüfung abgeschlossen ist – insbesondere der im Text benannte offene
-            Punkt zur Auftragsverarbeitung beim Hosting. Sie ist keine Rechtsberatung.
+            Technik dieser Website. Die Angaben zum Hosting, zur Logspeicherung und
+            zur Webstatistik wurden anhand der Angaben des Hosters geprüft, und die
+            Auftragsverarbeitung ist geregelt. Der Hinweis bleibt stehen, bis die
+            rechtliche Prüfung vollständig abgeschlossen ist. Sie ist keine
+            Rechtsberatung.
           </p>
         </div>
 
@@ -31,41 +33,43 @@
           Inhaber.
         </p>
 
-        <h2>2. Hosting über GitHub Pages</h2>
+        <h2>2. Hosting bei netcup</h2>
         <p>
-          Diese Website ist eine rein statische Seite und wird über
-          <strong>GitHub Pages</strong> ausgeliefert. Anbieter ist die
-          <strong>GitHub, Inc.</strong> (Unternehmen mit Sitz in den USA), ein
-          Unternehmen der Microsoft-Gruppe.
+          Diese Website ist eine rein statische Seite (HTML und CSS, kein
+          WordPress, keine Datenbank, kein PHP) und wird über das Webhosting der
+          <strong>netcup GmbH</strong>, Daimlerstraße 25, 76185 Karlsruhe,
+          Deutschland ausgeliefert. Ausgeliefert wird der Inhalt des
+          Web-Verzeichnisses („httpdocs“) der Domain
+          <strong>dgleichlabs.de</strong>.
         </p>
         <p>
-          Beim Abruf einer GitHub-Pages-Website werden technisch erforderliche
-          Verbindungsdaten verarbeitet. GitHub dokumentiert dazu ausdrücklich: Beim
-          Besuch einer GitHub-Pages-Website wird die <strong>IP-Adresse</strong> des
-          Besuchers <strong>protokolliert und zu Sicherheitszwecken
-          gespeichert</strong> – unabhängig davon, ob der Besucher bei GitHub
-          angemeldet ist.
+          Beim Abruf einer Website entstehen beim Webserver technisch unvermeidbar
+          Verbindungsdaten (siehe Abschnitt&nbsp;3). netcup dokumentiert für
+          Webhosting-Tarife mit der Verwaltungsoberfläche Plesk, dass Zugriffe auf
+          die Websites <strong>maximal 14 Tage</strong> gespeichert werden. Die
+          Logdateien liegen im Verzeichnis „Logs“, sind einsehbar und können
+          vorzeitig gelöscht werden; die Protokollrotation ist einstellbar.
         </p>
-        <p class="muted">
-          GitHub nennt in dieser Dokumentation <strong>keine konkrete
-          Speicherdauer</strong> für diese Protokolle. Eine Frist wird deshalb hier
-          nicht genannt; sie ist vor der Veröffentlichung mit GitHub abzuklären.
-          Ebenso ist zu klären, ob mit GitHub ein Vertrag zur Auftragsverarbeitung
-          nach Art. 28 DSGVO geschlossen ist oder geschlossen werden muss – das von
-          GitHub angebotene „GitHub Data Protection Agreement“ ist Bestandteil des
-          GitHub-Kundenvertrags und gilt nicht automatisch für kostenlose Konten.
-          <strong>Dieser Punkt ist vor der Veröffentlichung zu entscheiden.</strong>
+        <p>
+          Für die Verarbeitung im Rahmen des Hostings besteht mit der netcup GmbH
+          eine Vereinbarung zur Auftragsverarbeitung nach Art.&nbsp;28 DSGVO. Der
+          Inhalt der Vereinbarung wird hier nicht wiedergegeben.
         </p>
 
         <h2>3. Server-Logdaten</h2>
         <p>
           Bei jeder Anfrage an einen Webserver entstehen technisch unvermeidbar
-          Verbindungsdaten. Belegt sind für GitHub Pages die oben genannte
-          IP-Adresse sowie die Merkmale, die dein Browser bei einer HTTP-Anfrage
-          ohnehin übermittelt (etwa Datum und Uhrzeit des Abrufs, die angeforderte
-          Datei, der verwendete Browser und – falls vorhanden – die zuvor besuchte
-          Seite).
+          Verbindungsdaten. netcup dokumentiert für seine Webhosting-Tarife, dass
+          folgende Angaben in Logdateien gespeichert werden:
         </p>
+        <ul class="plain-list">
+          <li>die <strong>IP-Adresse</strong> des anfragenden Clients</li>
+          <li>Remote-Identität und Remote-User, soweit der Client sie übermittelt</li>
+          <li>Dauer der Anfrage, erste Zeile der Anfrage und Status der Anfrage</li>
+          <li>übertragene Datenmenge</li>
+          <li>Referrer, also die zuvor besuchte Seite, soweit übermittelt</li>
+          <li>User-Agent, also Angaben zu Browser und Betriebssystem</li>
+        </ul>
         <p>
           Diese Verarbeitung erfolgt beim Hosting-Anbieter, weil sie für die
           Auslieferung der Seite und deren sicheren, stabilen Betrieb erforderlich
@@ -74,9 +78,11 @@
           Auswertung von Zugriffen und keine Reichweitenmessung.
         </p>
         <p class="muted">
-          Konkrete Speicherfristen werden nicht genannt, weil GitHub für die
-          Pages-Protokolle keine Frist veröffentlicht. Erfundene Angaben wären
-          irreführend.
+          Eine serverseitige Besucherstatistik über das Webstatistik-Werkzeug der
+          Verwaltungsoberfläche ist im Webhosting <strong>nicht aktiv</strong>
+          (Einstellung „Deaktiviert“). Zugriffe werden daher nicht über eine
+          Statistikfunktion ausgewertet. Für die Speicherdauer gilt die Angabe des
+          Hosting-Anbieters (Abschnitt&nbsp;2).
         </p>
 
         <h2>4. Kontaktaufnahme per E-Mail</h2>
@@ -134,26 +140,20 @@
           Skripte ausgeführt und keine Skripte nachgeladen.
         </p>
 
-        <h2>7. Übermittlung in Drittländer</h2>
+        <h2>7. Datenübermittlung in Drittländer</h2>
         <p>
-          Der Hosting-Anbieter GitHub, Inc. hat seinen Sitz in den <strong>Vereinigten
-          Staaten</strong>. Beim Abruf der Website können daher Verbindungsdaten in
-          die USA übermittelt und dort verarbeitet werden.
-        </p>
-        <p>
-          GitHub gibt in seiner Datenschutzerklärung an, sich gegenüber dem
-          US-Handelsministerium zur Einhaltung der Grundsätze des
-          <strong>EU-U.S. Data Privacy Framework</strong> verpflichtet zu haben
-          (einschließlich der Erweiterungen für das Vereinigte Königreich und die
-          Schweiz). Für Übermittlungen, die davon nicht erfasst sind, stützt sich
-          GitHub nach eigenen Angaben auf die <strong>Standardvertragsklauseln</strong>
-          der EU-Kommission.
+          Die Hosting-Anbieterin netcup GmbH hat ihren Sitz in Karlsruhe und
+          betreibt ihre Rechenzentrumsinfrastruktur nach eigenen Angaben in
+          Nürnberg (Deutschland) und Wien (Österreich) – beide innerhalb der
+          Europäischen Union. Eine Übermittlung von Verbindungsdaten in
+          Drittländer durch das Hosting wird deshalb hier nicht angenommen.
         </p>
         <p class="muted">
-          Maßgeblich sind die aktuellen Angaben von GitHub. Ob für dieses Projekt
-          zusätzlich ein Vertrag zur Auftragsverarbeitung (Art.&nbsp;28 DSGVO)
-          erforderlich oder abzuschließen ist, ist <strong>offen</strong> und vor der
-          Veröffentlichung zu klären (siehe Abschnitt&nbsp;2).
+          Ob netcup für einzelne Leistungen Unterauftragnehmer außerhalb der EU
+          einsetzt, regeln die Vereinbarung zur Auftragsverarbeitung und die
+          Datenschutzerklärung von netcup. Eine darüber hinausgehende Aussage wird
+          hier bewusst nicht getroffen, weil sie in diesem Rahmen nicht geprüft
+          wurde.
         </p>
 
         <h2>8. Rechtsgrundlagen</h2>

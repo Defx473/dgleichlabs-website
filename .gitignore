@@ -27,3 +27,6 @@ node_modules/
 # Lokale Vorschau-/Zwischenartefakte
 .tmp/
 dist-cache/
+
+# Deployment-Artefakte (lokal erzeugt, aus public/ reproduzierbar)
+*.zip

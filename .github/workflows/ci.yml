@@ -1,0 +1,89 @@
+# Prüft bei jedem Push auf main, dass public/ zum Quellstand passt und die
+# Rechtstexte nicht versehentlich ungeprüft veröffentlicht werden.
+#
+# WICHTIG – bewusst KEIN Deployment:
+#   Diese Website wird NICHT mehr über GitHub Pages ausgeliefert, sondern über
+#   das netcup-Webhosting (Zielverzeichnis httpdocs/). Der frühere Workflow
+#   pages.yml (configure-pages / upload-pages-artifact / deploy-pages) wurde
+#   deshalb entfernt, damit kein versehentliches, paralleles Production-
+#   Deployment stattfinden kann. GitHub bleibt ausschließlich
+#   Versionsverwaltung und Backup.
+#
+#   Der Upload nach netcup erfolgt manuell (siehe docs/DEPLOYMENT.md) und
+#   erst, wenn tools/production_gate.py grün ist. Das Paket dafür stellt der
+#   Job "package" als herunterladbares Artefakt bereit.
+#
+# Benötigt keine Secrets.
+
+name: Verify site (no deployment)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify build output
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      # Bewusst ohne Pillow: die PNG-Erzeugung haengt von Pillow-Version und
+      # installierten Schriften ab und ist nicht bit-genau reproduzierbar.
+      # Ohne Pillow meldet check.py die Bildmass- und Asset-Frischepruefung
+      # als "Hinweis" (sichtbar im Log) statt als Fehler. Lokal ist sie strikt.
+      - name: Verify public/ matches sources
+        run: |
+          python tools/build.py --check
+          python tools/check.py
+
+      - name: Run tool tests
+        run: python -m unittest discover -s tools/tests -t tools
+
+  # NOTBREMSE: Es darf kein auslieferbares Paket entstehen, solange im
+  # Impressum oder in der Datenschutzerklaerung Platzhalter stehen oder der
+  # Pruefhinweis aktiv ist. Der Job laeuft VOR dem Paket-Job - ein
+  # fehlgeschlagener Lauf bedeutet hier ausdruecklich NICHT "kaputt", sondern
+  # "noch nicht freigegeben". Der Gate darf nicht umgangen oder abgeschwaecht
+  # werden.
+  production-gate:
+    name: Production safety gate
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Block package while legal placeholders remain
+        run: python tools/production_gate.py --list
+
+  # Stellt den später manuell nach netcup hochzuladenden Ordner bereit.
+  # Kein Pages-Upload: der Inhalt von public/ ist das Produkt.
+  package:
+    name: Package httpdocs payload
+    needs: production-gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Upload public/ as artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: dgleichlabs-httpdocs
+          path: public
+          if-no-files-found: error

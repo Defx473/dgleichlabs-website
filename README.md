@@ -40,7 +40,9 @@ wartungsarm, ohne Backend) sind mit einem kleinen Generator vollständig erfüll
   python -m pip install pillow
   ```
 - **Git** (für Versionierung)
-- Optional zum Testen der ausgelieferten Kopfzeilen: Cloudflare Pages (siehe `docs/DEPLOYMENT.md`)
+- Optional zum Prüfen der ausgelieferten Kopfzeilen: eine Umgebung, die `.htaccess`
+  auswertet (Apache). Lokal prüft `tools/check.py` den Inhalt von `.htaccess`
+  statisch – siehe `docs/DEPLOYMENT.md`
 
 Es ist **kein** `npm install` nötig.
 
@@ -73,7 +75,7 @@ keine Verzeichnis-Auflistung.
 | Metadaten, Domain, E-Mail, Navigation | `content/site.json` |
 | Projekte | `content/projects.json` |
 | Aussehen | `public/assets/styles.css` |
-| Sicherheits-Header / Weiterleitungen | `src/static/_headers`, `src/static/_redirects` |
+| Sicherheits-Header / Weiterleitungen | `src/static/.htaccess` (Apache, netcup) |
 
 Nach jeder Änderung:
 
@@ -142,21 +144,21 @@ Abgleich vollständig.
 
 Kurzfassung (Details und DNS-Records: **`docs/DEPLOYMENT.md`**):
 
-- **Empfohlen für „Mail bleibt bei STRATO“:** GitHub Pages + DNS bei STRATO über
-  A-Records (Apex) und CNAME (`www`). Keine Nameserver-Änderung, damit **kein
-  Risiko für MX-/Mail-Einträge**.
-- **Alternative:** Cloudflare Pages – dafür muss die **gesamte Zone** inklusive
-  MX/SPF/DKIM zu Cloudflare umziehen (Nameserver-Wechsel). Nur nach vollständigem
-  DNS-Abgleich und ausdrücklicher Freigabe.
+- **Produktiv:** netcup Webhosting (Tarif „Webhosting 1000 NUE“). Der Inhalt von
+  `public/` wird nach `httpdocs/` der Domain `dgleichlabs.de` hochgeladen.
+  Kein WordPress, keine Datenbank, kein PHP. Die E-Mail bleibt unverändert bei
+  STRATO; DNS-Records werden nicht angefasst, solange das nicht ausdrücklich
+  freigegeben ist.
+- **GitHub** bleibt Versionsverwaltung und Backup – **kein** Production-Hosting
+  mehr. Der frühere Pages-Workflow ist entfernt; `ci.yml` verifiziert nur.
 
-Publish-Verzeichnis: `public/` · Publish-Branch: `main` (Root) ·
-Build-Kommando: **keines** (bereits gebauter Ordner).
+Upload-Inhalt: der komplette Ordner `public/` (inklusive `.htaccess`) ·
+Build-Kommando beim Hoster: **keines** (bereits gebauter Ordner).
 
-Für GitHub Pages liegt ein fertiger Workflow bereit:`.github/workflows/pages.yml`
-(*Verify* → *Build* → *Deploy*, keine Secrets nötig). Er verifiziert vor dem
-Deploy, dass `public/` zum Quellstand passt, und lädt `public/` als Artefakt hoch.
-Einmalig im Repository nötig: *Settings → Pages → Source: GitHub Actions* und die
-Custom Domain `dgleichlabs.de`.
+Die vollständige Anleitung inklusive Zielstruktur, Migrationsschritten,
+DNS-Entscheidung und Abnahmeliste steht in **`docs/DEPLOYMENT.md`**.
+Automatisch deployt wird nichts: der Upload ist ein bewusster, manueller
+Schritt nach grünem Production Gate.
 
 ## 7. Projektstruktur
 
@@ -170,9 +172,8 @@ dgleichlabs-website/
 │  ├─ pages/                Seiteninhalte: index, projekte, impressum,
 │  │                        datenschutz, 404
 │  └─ static/               Kopiervorlagen für das Hosting
-│     ├─ _headers           CSP und Sicherheits-Header (Cloudflare Pages)
-│     ├─ _redirects         www → apex, index.html-Kanonisierung
-│     └─ .nojekyll          GitHub Pages: Dateien mit _ unverändert ausliefern
+│     └─ .htaccess          CSP/Sicherheits-Header, www- und index.html-
+│                           Weiterleitungen, 404 (Apache/netcup)
 ├─ tools/                   Werkzeuge (nur Python-Standardbibliothek + Pillow)
 │  ├─ build.py              Generator
 │  ├─ check.py              Qualitäts-/Sicherheitsprüfung
@@ -183,8 +184,8 @@ dgleichlabs-website/
 │  ├─ projekte/ impressum/ datenschutz/
 │  ├─ assets/               styles.css, favicon.svg, PNG-Icons, og.png
 │  ├─ robots.txt, sitemap.xml, site.webmanifest
-│  └─ _headers, _redirects, .nojekyll
-├─ docs/DEPLOYMENT.md       Deployment + DNS-Records (STRATO-schonend)
+│  └─ .htaccess
+├─ docs/DEPLOYMENT.md       Deployment auf netcup + DNS-Entscheidung
 ├─ README.md
 └─ LICENSE                  Alle Rechte vorbehalten
 ```
@@ -226,15 +227,17 @@ Bewusste Technik-Entscheidungen, die die Datenschutzerklärung stützen:
 
 Wenn später etwas davon hinzukommt (Fonts, Analytics, Formular, Karten, Videos),
 **muss** `src/pages/datenschutz.html` mitgeändert und die CSP in
-`src/static/_headers` angepasst werden.
+`src/static/.htaccess` angepasst werden.
 
 ## 10. Security
 
 - Keine Secrets, Tokens, Zugangsdaten, internen IPs oder lokalen Pfade im
   Repository – `tools/check.py` prüft das automatisch.
-- Strenge Header in `src/static/_headers`: CSP mit `default-src 'none'`,
+- Strenge Header in `src/static/.htaccess`: CSP mit `default-src 'none'`,
   `script-src 'none'`, `frame-ancestors 'none'`, `nosniff`, `Referrer-Policy`,
-  `Permissions-Policy`, HSTS (ohne `includeSubDomains`).
+  `Permissions-Policy`, HSTS (ohne `includeSubDomains`). Regeln stehen in
+  `<IfModule>`-Blöcken, damit ein fehlendes Apache-Modul keinen 500-Fehler
+  erzeugt; `tools/check.py` prüft den Inhalt der Datei statisch.
 - Externe Links: es gibt derzeit **keine**. Sollten welche dazukommen, sind sie
   mit `rel="noopener noreferrer"` und klarem Ziel zu setzen.
 - `tools/serve.py` ist **nur** für die lokale Vorschau (bindet auf `127.0.0.1`).
@@ -243,9 +246,9 @@ Wenn später etwas davon hinzukommt (Fonts, Analytics, Formular, Karten, Videos)
 
 > **LEGAL REVIEW REQUIRED BEFORE PUBLIC DEPLOYMENT**
 > Impressum und Datenschutzerklärung beschreiben die tatsächlich eingesetzte
-> Technik, enthalten aber noch die personenbezogenen Angaben des Inhabers als
-> Platzhalter. Sie sind vor der Veröffentlichung zu ergänzen und rechtlich zu
-> prüfen.
+> Technik (Hosting bei netcup, Postfach bei STRATO). Der Hinweis bleibt stehen,
+> bis die unten aufgeführten Punkte entschieden und die Texte rechtlich geprüft
+> sind.
 
 **Personenbezogene Angaben sind eingetragen** (Name und ladungsfähige
 Geschäftsanschrift des Inhabers, übernommen aus der Gewerbeanmeldung; Details
@@ -257,22 +260,37 @@ Prüfhinweises:
       `src/pages/impressum.html` und `src/pages/datenschutz.html` entfernen,
       wenn alle Punkte unten entschieden sind
 
+**Geklärt (Hosting, 1. Oktober 2026)** – verifiziert und in den Text übernommen:
+
+- [x] **AV-Vertrag mit netcup** (Art. 28 DSGVO): im CCP unter *Stammdaten →
+      Auftragsverarbeitung* bereits erstellt; Vertragspartner DGleich Labs und
+      netcup GmbH. Die Datenschutzerklärung verweist darauf, ohne Inhalte zu
+      zitieren.
+- [x] **Log-Speicherdauer**: laut offizieller netcup-Dokumentation für
+      Webhosting-Tarife mit Plesk **maximal 14 Tage**; Formulierung in
+      `src/pages/datenschutz.html` daran angeglichen.
+- [x] **Webstatistiken**: unter *Hosting-Einstellungen → Webstatistiken* als
+      **Deaktiviert** verifiziert; keine serverseitige Statistik aktiv.
+- [x] **TLS**: im temporären Hosting bewusst noch **kein** Zertifikat – kein
+      Fehler; Let's Encrypt erst nach Verbindung von `dgleichlabs.de`.
+
 **DECISION REQUIRED** (bewusst nicht entschieden, nichts erfunden):
 
 - [ ] **Telefonnummer**: derzeit keine angegeben; Kontakt läuft ausschließlich über die E-Mail-Adresse. Für § 5 DDG ist eine schnelle elektronische Kontaktaufnahme erforderlich – ob die E-Mail-Adresse dafür genügt, ist die eigene Rechtsentscheidung.
 - [ ] **Umsatzsteuer**: keine USt-IdNr. angegeben. Klären, ob eine vorliegt oder ob die Kleinunternehmerregelung nach § 19 UStG greift; erst dann eintragen.
 - [ ] **Aufsichtsbehörde**: die Datenschutzerklärung benennt bewusst keine konkrete Behörde, sondern die Zuständigkeit des Sitz-Bundeslandes. Optional, aber üblich: die Behörde namentlich ergänzen.
-- [ ] **GitHub-Pages-Hosting**: prüfen, ob mit GitHub ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO geschlossen ist bzw. geschlossen werden muss. Das „GitHub Data Protection Agreement“ ist Teil des GitHub-Kundenvertrags und gilt nicht automatisch für kostenlose Konten.
-- [ ] **Log-Speicherdauer**: GitHub veröffentlicht für GitHub-Pages-Protokolle keine Frist; eine konkrete Dauer darf nur genannt werden, wenn sie belegt ist.
+- [ ] **`.htaccess`-Auswertung**: bestätigen, dass der Tarif `.htaccess` auswertet (Header, Weiterleitungen, 404). Bei 500-Fehler nach dem Upload: Datei entfernen, Einstellungen über die Hosting-Einstellungen setzen.
+- [ ] **DNS-Variante**: entscheiden, ob nur der Web-Record auf netcup zeigt (Mail bleibt bei STRATO unangetastet) oder ob netcup Nameserver wird (dann müssen alle Mail-Records mitziehen).
 
 Vor einer Veröffentlichung abzuarbeiten:
 
 - [ ] **Impressum vervollständigen und prüfen** – Datei `src/pages/impressum.html`
 - [ ] **Datenschutzerklärung prüfen** – Datei `src/pages/datenschutz.html`
 - [ ] `content/site.json`: `lastmod` und `legalStand` aktualisieren
-- [ ] **Domain verbinden** (`dgleichlabs.de`, optional `www`) – `docs/DEPLOYMENT.md`
-- [ ] **HTTPS prüfen** (Zertifikat aktiv, „Enforce HTTPS“ bzw. Cloudflare-Universalschutz)
-- [ ] `_headers`-Verhalten beim Hoster prüfen (Cloudflare Pages) oder bewusst darauf verzichten (GitHub Pages)
+- [ ] **Domain im Webhosting verbinden** (`dgleichlabs.de`, optional `www`) – `docs/DEPLOYMENT.md`
+- [ ] **GitHub Pages stilllegen** – *Settings → Pages → Source: None*; sonst bleibt eine zweite Auslieferung bestehen
+- [ ] **HTTPS prüfen** (Let's Encrypt im Webhosting aktiv, Zertifikat gültig, automatische Verlängerung)
+- [ ] **`.htaccess`-Wirkung prüfen** – `curl -I https://dgleichlabs.de/` zeigt CSP, `nosniff`, HSTS; `/_headers`, `/_redirects`, `/.nojekyll` liefern 404
 - [ ] **Kontaktadresse testen** – E-Mail an `info@dgleichlabs.de`, Zustellung und Antwortadresse prüfen
 - [ ] **Mobile QA** auf echtem Gerät (iOS + Android), Schriftgrößen, Zoom, Querformat
 - [ ] Tastatur-/Screenreader-Kurztest (Tab-Reihenfolge, Skip-Link, Fokus sichtbar)

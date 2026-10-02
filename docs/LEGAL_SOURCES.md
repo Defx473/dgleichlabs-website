@@ -4,7 +4,9 @@ Diese Datei ist für die **menschliche Rechtsprüfung**: sie zeigt, woher jede
 Aussage in `src/pages/impressum.html` und `src/pages/datenschutz.html` stammt.
 Sie ist **nicht** Teil der ausgelieferten Website (liegt nicht in `public/`).
 
-Abrufdatum der Quellen: **28. September 2026**
+Abrufdatum der Quellen: **28. September 2026** – netcup-Quellen (Abschnitt 2):
+**1. Oktober 2026** (dort auch die vom Betreiber im netcup-Panel verifizierten
+Angaben zu AV-Vertrag, Log-Speicherdauer und Webstatistiken)
 
 ## 1. Was die Website tatsächlich tut (technisch geprüft)
 
@@ -24,47 +26,84 @@ Nachvollziehbar mit:
 python tools/check.py     # u. a. externe Ressourcen, CSS, Header
 ```
 
-## 2. Hosting: GitHub Pages
+## 2. Hosting: netcup GmbH
 
-**Aussage auf der Seite:** Beim Besuch einer GitHub-Pages-Website wird die
-IP-Adresse des Besuchers protokolliert und zu Sicherheitszwecken gespeichert –
-unabhängig davon, ob er bei GitHub angemeldet ist.
-
-**Quelle:** GitHub Docs – *What is GitHub Pages?*, Abschnitt „Data collection“,
-<https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages>
-
-Wörtlich: „When a GitHub Pages site is visited, the visitor's IP address is
-logged and stored for security purposes, regardless of whether the visitor has
-signed into GitHub or not.“
-
-**Nicht** auf der Seite behauptet, weil nicht belegt:
-- keine konkrete Speicherdauer für diese Protokolle (GitHub nennt keine),
-- keine Aussage über konkrete Logfelder über die hinaus, die eine HTTP-Anfrage
-  ohnehin übermittelt.
-
-**Anbieter:** GitHub, Inc. (USA), Teil der Microsoft-Gruppe.
-
-## 3. Drittlandübermittlung in die USA
-
-**Aussage auf der Seite:** GitHub erklärt, sich zur Einhaltung der Grundsätze
-des EU-U.S. Data Privacy Framework verpflichtet zu haben (inkl. Erweiterungen
-für UK und Schweiz); im Übrigen stützt sich GitHub nach eigenen Angaben auf die
-Standardvertragsklauseln der EU-Kommission.
+**Aussage auf der Seite:** Die Website wird über das Webhosting der netcup GmbH,
+Daimlerstraße 25, 76185 Karlsruhe, Deutschland ausgeliefert; der Inhalt von
+`public/` liegt im Web-Verzeichnis (`httpdocs`) der Domain `dgleichlabs.de`.
 
 **Quellen:**
-- GitHub General Privacy Statement (Abschnitt zum Data Privacy Framework),
-  <https://docs.github.com/site-policy/privacy-policies/github-privacy-statement>
-  – „GitHub has certified to the U.S. Department of Commerce that it adheres to
-  the EU-U.S. Data Privacy Framework Principles …“
-- GitHub Data Protection Agreement (SCCs, DPF-Selbstzertifizierung),
-  <https://github.com/customer-terms/github-data-protection-agreement>
-- Data Privacy Framework Registry, Eintrag GitHub (EU-U.S., UK Extension und
-  Swiss-U.S. jeweils „Active“), <https://www.dataprivacyframework.gov/participant/6174>
 
-**Offener Punkt (DECISION REQUIRED):** Das GitHub Data Protection Agreement ist
-laut eigener Beschreibung „part of the GitHub Customer Agreement“. Ob daraus für
-ein **kostenloses** Konto mit öffentlichem Repository ein Auftragsverarbeitungs-
-vertrag nach Art. 28 DSGVO folgt, ist zu klären, bevor veröffentlicht wird.
+- netcup Impressum (Firmierung, Sitz, Anschrift),
+  <https://www.netcup.com/de/kontakt/impressum>
+- netcup Helpcenter „Speicherung von Logdateien“ – dort sind die in
+  Webhosting-Tarifen gespeicherten Felder einzeln aufgeführt (IP-Adresse,
+  Remote-Identität, Remote-User, Dauer des Requests, First Line of Request,
+  Status, übertragene Daten, Referrer, User-Agent) und für Webhosting-Produkte
+  mit Plesk eine Speicherung von **maximal 14 Tagen** für Zugriffe auf die
+  Websites genannt; die Protokollrotation kann der Kunde einstellen,
+  <https://www.netcup.com/de/helpcenter/dokumentation/sicherheit/speicher-dauer>
+- netcup Helpcenter „Auftragsverarbeitung“ – netcup stellt Kunden eine
+  Zusatzvereinbarung zur Auftragsverarbeitung bereit, erstellbar im Customer
+  Control Panel, ohne zusätzliche Kosten,
+  <https://www.netcup.com/de/helpcenter/dokumentation/general/avv>
+- netcup „Rechenzentren in Europa“ – Rechenzentrumsinfrastruktur in Nürnberg (DE)
+  und Wien (AT), <https://www.netcup.com/de/ueber-netcup/rechenzentren>
+
+**Auf der Seite steht deshalb:** Anbieterin mit Sitz in Deutschland; die
+Logfelder sind einzeln aufgezählt; die 14 Tage sind als Angabe aus der
+netcup-Dokumentation gekennzeichnet und um das Verzeichnis `Logs`, die
+vorzeitige Löschmöglichkeit und die einstellbare Protokollrotation ergänzt;
+Rechenzentren in Nürnberg/Wien und damit keine angenommene Drittlandübermittlung
+durch das Hosting.
+
+**Vom Betreiber verifiziert (1. Oktober 2026):**
+
+- **AV-Vertrag:** Im netcup CCP unter *Stammdaten → Auftragsverarbeitung* ist
+  die Vereinbarung zur Auftragsverarbeitung nach Art. 28 DSGVO bereits erstellt;
+  Vertragspartner sind DGleich Labs und die netcup GmbH. Die Datenschutzerklärung
+  sagt deshalb, dass eine solche Vereinbarung besteht – ohne Vertragsinhalte zu
+  zitieren.
+- **Log-Speicherdauer:** Die offizielle netcup-Dokumentation (Abschnitt oben)
+  wurde geprüft und bestätigt für Webhosting-Tarife mit Plesk eine Speicherung
+  der Website-Zugriffe von maximal 14 Tagen. Es werden keine über diese Quelle
+  hinausgehenden Aussagen getroffen.
+- **Webstatistiken:** Im konkreten Account unter *Hosting-Einstellungen →
+  Webstatistiken* steht das Werkzeug auf **Deaktiviert**. Es ist derzeit
+  **keine** optionale serverseitige Statistik aktiv; die Erklärung nennt das so.
+
+**Nicht** auf der Seite behauptet, weil nicht belegt:
+
+- keine Aussage darüber, ob netcup Unterauftragnehmer außerhalb der EU einsetzt
+  (geregelt in der AV-Vereinbarung und der netcup-Datenschutzerklärung; hier
+  nicht geprüft).
+
+**Offene Punkte (DECISION REQUIRED):** keine mehr zum Hosting (AV-Vertrag,
+Log-Speicherdauer und Webstatistik sind geklärt). Die verbliebenen offenen
+Punkte betreffen Betreiberentscheidungen (Upload-Weg, DNS-Variante, TLS) – siehe
+`docs/DEPLOYMENT.md`, Abschnitt 10.
+
+## 3. Frühere Planung: GitHub Pages (ersetzt)
+
+Das Hosting über GitHub Pages ist **nicht mehr vorgesehen** (Migration auf
+netcup, siehe `docs/DEPLOYMENT.md`). Die folgenden Quellen belegen, dass die
+früheren Aussagen belegt waren; für die Datenschutzerklärung sind sie nicht mehr
+maßgeblich:
+
+- GitHub Docs – *What is GitHub Pages?*, Abschnitt „Data collection“
+  („When a GitHub Pages site is visited, the visitor's IP address is logged and
+  stored for security purposes, regardless of whether the visitor has signed
+  into GitHub or not.“),
+  <https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages>
+- GitHub General Privacy Statement (Data-Privacy-Framework-Abschnitt),
+  <https://docs.github.com/site-policy/privacy-policies/github-privacy-statement>
+- GitHub Data Protection Agreement,
+  <https://github.com/customer-terms/github-data-protection-agreement>
+- Data Privacy Framework Registry, Eintrag GitHub,
+  <https://www.dataprivacyframework.gov/participant/6174>
+
+GitHub bleibt **Versionsverwaltung und Backup** – dabei werden keine Daten der
+Website-Besucher verarbeitet. Auch hier gilt: keine Aussage ohne Beleg.
 
 ## 4. E-Mail: STRATO GmbH
 

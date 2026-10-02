@@ -212,7 +212,9 @@ class WiringTests(unittest.TestCase):
     """Die Notbremse selbst darf nicht stillschweigend verschwinden.
 
     check.py prueft nur die VERDRAHTUNG (Datei vorhanden, Workflow ruft sie auf),
-    nicht die Platzhalter - sonst waere lokale Entwicklung unmoeglich.
+    nicht die Platzhalter - sonst waere lokale Entwicklung unmoeglich. Ausserdem
+    darf kein Workflow einen GitHub-Pages-Deploy enthalten: ausgeliefert wird
+    ueber netcup, ein zweites Deployment waere ein Risiko.
     """
 
     def setUp(self) -> None:
@@ -239,7 +241,7 @@ class WiringTests(unittest.TestCase):
             (root / "tools").mkdir()
             (root / "tools" / "production_gate.py").write_text("", encoding="utf-8")
             (root / ".github" / "workflows").mkdir(parents=True)
-            (root / ".github" / "workflows" / "pages.yml").write_text(
+            (root / ".github" / "workflows" / "ci.yml").write_text(
                 "name: irgendwas\n", encoding="utf-8"
             )
             self.check.ROOT = root
@@ -256,7 +258,7 @@ class WiringTests(unittest.TestCase):
             (root / "tools").mkdir()
             (root / "tools" / "production_gate.py").write_text("", encoding="utf-8")
             (root / ".github" / "workflows").mkdir(parents=True)
-            (root / ".github" / "workflows" / "pages.yml").write_text(
+            (root / ".github" / "workflows" / "ci.yml").write_text(
                 "run: python tools/production_gate.py\nneeds: production-gate\n",
                 encoding="utf-8",
             )
@@ -265,6 +267,26 @@ class WiringTests(unittest.TestCase):
             self.check.check_production_gate(problems)
         self.assertTrue(any("Tests fuer das production_gate fehlen" in item for item in problems),
                         problems)
+
+    def test_pages_deployment_in_a_workflow_is_reported(self) -> None:
+        """Ein wieder eingefuehrter Pages-Deploy muss auffallen."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "tools").mkdir()
+            (root / "tools" / "production_gate.py").write_text("", encoding="utf-8")
+            workflows = root / ".github" / "workflows"
+            workflows.mkdir(parents=True)
+            (workflows / "ci.yml").write_text(
+                "run: python tools/production_gate.py\nneeds: production-gate\n",
+                encoding="utf-8",
+            )
+            (workflows / "pages.yml").write_text(
+                "uses: actions/deploy-pages@v5\n", encoding="utf-8"
+            )
+            self.check.ROOT = root
+            problems: list[str] = []
+            self.check.check_production_gate(problems)
+        self.assertTrue(any("deploy-pages" in item for item in problems), problems)
 
     def test_real_project_wiring_is_clean(self) -> None:
         problems: list[str] = []

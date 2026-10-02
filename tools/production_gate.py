@@ -83,6 +83,11 @@ HAS_LETTER = re.compile(r"[A-Za-zÄÖÜäöüß]")
 SKIP_SUFFIXES = {".png", ".ico", ".jpg", ".jpeg", ".webp", ".gif", ".pdf", ".woff", ".woff2"}
 SKIP_DIRS = {".git", "__pycache__", "node_modules"}
 
+# Hoster-Konfiguration (Apache/.htaccess) ist ausgenommen: Direktiven wie
+# [NC], [R=301,L] oder [L] sind keine Platzhalter. Die Erkennung fuer
+# ausgelieferte Seiten/Rechtstexte bleibt davon unberuehrt.
+SKIP_NAMES = {".htaccess", ".htpasswd"}
+
 
 @dataclass(frozen=True)
 class Finding:
@@ -125,6 +130,8 @@ def scan_directory(root: Path) -> list[Finding]:
         if not path.is_file():
             continue
         if any(part in SKIP_DIRS for part in path.parts):
+            continue
+        if path.name in SKIP_NAMES:
             continue
         if path.suffix.lower() in SKIP_SUFFIXES:
             continue
