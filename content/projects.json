@@ -2,16 +2,23 @@
   "_comment": [
     "Einzige Quelle für den Projektbereich. Ein neues Projekt = ein neuer Eintrag hier,",
     "danach `python tools/build.py` und `python tools/check.py` ausführen.",
-    "'published: false' bedeutet: Eintrag ist vorbereitet, wird aber NICHT auf der Website ausgegeben."
+    "'published: false' bedeutet: Eintrag ist vorbereitet, wird aber NICHT auf der Website ausgegeben.",
+    "Reihenfolge der Einträge = Reihenfolge auf der Seite.",
+    "Optional: 'featured': true hebt eine Karte leicht hervor. 'detailUrl'/'detailLabel' verlinken auf eine",
+    "Detailseite – nur setzen, wenn diese Seite tatsächlich existiert (check.py prüft den Link).",
+    "In diese Datei gehören ausschließlich Projekte, die der Owner öffentlich freigegeben hat."
   ],
   "projects": [
     {
-      "id": "project-nova",
-      "name": "Project Nova",
+      "id": "fieldpro",
+      "name": "FieldPro",
       "status": "in-development",
-      "statusLabel": "In Entwicklung",
-      "summary": "Ein Software-Projekt in früher Entwicklung. Öffentliche Details folgen, sobald sie belastbar sind.",
-      "areas": ["Mobile", "Plattform"],
+      "statusLabel": "Pilotphase",
+      "featured": true,
+      "summary": "Mobile Dokumentationslösung für Handwerk, Wartung und Service: Einsätze, Mängel, Fotos, Aufmaß, Zeiten und Material werden direkt vor Ort erfasst, PDF-Berichte entstehen auf dem Gerät. Aktuell in der Pilotphase mit ausgewählten Betrieben.",
+      "areas": ["Android", "Handwerk", "Dokumentation"],
+      "detailUrl": "/fieldpro/",
+      "detailLabel": "Projektseite ansehen",
       "published": true
     },
     {
@@ -24,14 +31,40 @@
       "published": true
     },
     {
-      "id": "htm-work",
-      "name": "HTM Work",
-      "status": "not-published",
-      "statusLabel": "Coming soon",
-      "summary": "Vorbereitet. Veröffentlichung erst nach ausdrücklicher Freigabe.",
-      "areas": ["Mobile"],
-      "published": false,
-      "note": "INTERN: Nicht öffentlich nennen, bis die Freigabe vorliegt. Der Eintrag bleibt vorbereitet (published=false)."
+      "id": "project-nova",
+      "name": "Project Nova",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Ein Software-Projekt in früher Entwicklung. Öffentliche Details folgen, sobald sie belastbar sind.",
+      "areas": ["Mobile", "Plattform"],
+      "published": true
+    },
+    {
+      "id": "ai-game-assistant",
+      "name": "AI Game Assistant",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Experimentelles Android-Projekt zur visuellen Analyse von Bildschirminhalten und darauf aufbauenden Assistenzfunktionen. In Entwicklung – keine Veröffentlichung und keine Store-Verfügbarkeit.",
+      "areas": ["Android", "Computer Vision", "Assistenz"],
+      "published": true
+    },
+    {
+      "id": "karto",
+      "name": "KARTO",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Technisches Entwicklungsprojekt im Solana-/Web3-Umfeld mit Fokus auf Blockchain-Integration und experimentelle Utility-Funktionen. In Entwicklung – nicht öffentlich verfügbar.",
+      "areas": ["Web3", "Solana"],
+      "published": true
+    },
+    {
+      "id": "dgleichlabs-website",
+      "name": "DGleich Labs Website",
+      "status": "published",
+      "statusLabel": "Veröffentlicht",
+      "summary": "Die öffentliche Website und technische Plattform von DGleich Labs: statisch erzeugt, mit eigenem Build- und Prüfprozess – ohne externe Dienste, ohne Tracking und ohne Cookies.",
+      "areas": ["Web", "Statisch"],
+      "published": true
     }
   ]
 }

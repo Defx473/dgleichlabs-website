@@ -182,13 +182,33 @@ def render_project_card(project: dict) -> str:
     summary = html.escape(project.get("summary", ""))
     if not project.get("published", False) and project.get("note"):
         summary = f"{summary}\n            <span class=\"muted\">{html.escape(project['note'])}</span>"
+
+    # Detailseiten-Link nur, wenn eine Seite hinterlegt ist. Es wird bewusst
+    # kein Link erzeugt, wenn es keine Seite gibt: ein leerer Eintrag waere ein
+    # toter Verweis, den check.py zu Recht bemangelt.
+    detail = ""
+    detail_url = project.get("detailUrl")
+    if detail_url:
+        label = project.get("detailLabel") or "Projekt ansehen"
+        detail = (
+            '            <p class="project-link">'
+            f'<a href="{html.escape(detail_url, quote=True)}">'
+            f"{html.escape(label)}</a></p>\n"
+        )
+
+    # Hervorhebung ist optional und rein visuell (z. B. laufende Pilotphase).
+    classes = "project-card"
+    if project.get("featured", False):
+        classes += " project-card-featured"
+
     return (
-        '          <li class="project-card">\n'
+        f'          <li class="{classes}">\n'
         '            <div class="project-head">\n'
         f"              <h3>{html.escape(project['name'])}</h3>\n"
         f'              <span class="badge">{html.escape(project["statusLabel"])}</span>\n'
         "            </div>\n"
         f"            <p>{summary}</p>\n"
+        f"{detail}"
         '            <ul class="project-areas">\n'
         f"{areas}\n"
         "            </ul>\n"

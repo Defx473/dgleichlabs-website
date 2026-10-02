@@ -194,7 +194,8 @@ dgleichlabs-website/
 
 ## 8. Projekte ergänzen
 
-Ein neues Projekt ist **ein Eintrag** in `content/projects.json`:
+Ein neues Projekt ist **ein Eintrag** in `content/projects.json`. Die
+**Reihenfolge** der Einträge ist die Reihenfolge auf der Seite:
 
 ```json
 {
@@ -204,19 +205,36 @@ Ein neues Projekt ist **ein Eintrag** in `content/projects.json`:
   "statusLabel": "In Entwicklung",
   "summary": "Ein Satz, der ehrlich beschreibt, was existiert.",
   "areas": ["Mobile", "AI Tools"],
-  "published": true
+  "published": true,
+  "featured": false,
+  "detailUrl": "/mein-projekt/",
+  "detailLabel": "Projektseite ansehen"
 }
 ```
 
 Danach `python tools/build.py && python tools/check.py`.
 
+| Feld | Pflicht | Wirkung |
+|---|---|---|
+| `id` | ja | technische Kennung |
+| `name`, `statusLabel`, `summary`, `areas` | ja | Karteninhalt (`areas` werden als Badges gezeigt) |
+| `status` | ja | freier Wert, wird derzeit nur dokumentiert |
+| `published` | ja | `false` = Eintrag ist **vorbereitet** und wird nirgends ausgeliefert |
+| `featured` | nein | dezente Hervorhebung einer einzelnen Karte (z. B. Pilotphase) |
+| `detailUrl`, `detailLabel` | nein | Link auf eine **bestehende** Detailseite. Ohne `detailUrl` entsteht kein Link – `tools/check.py` bemängelt einen toten Verweis |
+
 `"published": false` bedeutet: der Eintrag ist **vorbereitet**, wird aber nirgends
 ausgeliefert. `tools/check.py` schlägt Alarm, wenn ein nicht freigegebenes Projekt
 doch im fertigen HTML auftaucht.
 
+In diese Datei gehören **ausschließlich** Projekte, die der Owner öffentlich
+freigegeben hat. Interne Projekte und Experimente bleiben draußen – auch als
+„weitere Projekte“ oder Andeutung. Es gibt bewusst keinen Automatismus, der
+Projekte aus anderen Repositories einsammelt.
+
 Status-Werte für `statusLabel` sind frei wählbar, üblich sind „In Entwicklung“,
-„Coming soon“ oder ein echtes Veröffentlichungsdatum. **Keine** Store-Links,
-Downloadbuttons oder Preise, solange nichts veröffentlicht ist.
+„Pilotphase“ oder „Veröffentlicht“. **Keine** Store-Links, Downloadbuttons oder
+Preise, solange nichts veröffentlicht ist.
 
 ## 9. Datenschutz im Design
 

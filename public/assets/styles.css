@@ -508,6 +508,11 @@ ol {
   transform: translateY(-2px);
 }
 
+/* Optionale, dezente Hervorhebung (z. B. laufende Pilotphase). */
+.project-card-featured {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+}
+
 .card h3,
 .project-card h3 {
   margin-bottom: 0.45rem;
@@ -555,6 +560,16 @@ ol {
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 0.25rem 0.6rem;
+}
+
+/* Optionaler Detailseiten-Link in einer Karte – nur wenn eine Seite existiert. */
+.project-link {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.project-link a {
+  font-weight: 600;
 }
 
 .badge {
