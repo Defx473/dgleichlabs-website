@@ -9,6 +9,11 @@ Inhalt:
 * **Teil D** – Vorlage für einen persönlichen Erstkontakt (nicht versenden)
 * **Teil E** – Abgrenzung der Kontaktwege und Prüfrahmen
 
+Der **Ablauf** (Pilotgröße, Zielbetriebe, Folgenachricht, Antwortvorlagen,
+Funnel, Feedback, Datenschutzregeln) steht in `docs/FIELDPRO_PILOT_PROCESS.md`.
+Dieses Dokument liefert dazu den **Volltext des Erstkontakts** (Teil D) und den
+**rechtlichen Prüfrahmen** (Teil E).
+
 > Dieses Dokument enthält **keine Rechtsberatung**. Es benennt nur, welche Fragen
 > vor einer Kontaktaufnahme zu klären sind. Verbindliche Aussagen dazu darf nur
 > eine juristisch qualifizierte Person treffen.
@@ -72,8 +77,9 @@ Keine Ausrufezeichen, keine Werbewörter, kein Unicode-Schmuck.
 > * Es gibt **keine Verpflichtung**, die Anwendung später zu kaufen.
 > * Die App ist **in Entwicklung**. Funktionen und Bedienung können sich ändern.
 >
-> Ich schreibe Sie nur einmal an. Wenn das für Sie nicht interessant ist, ist
-> die Sache damit erledigt und Sie hören nichts weiter von mir.
+> Ohne Rückmeldung melde ich mich nach einigen Tagen ein einziges Mal – danach
+> hören Sie nichts mehr von mir. Wenn das für Sie nicht interessant ist, ist die
+> Sache damit erledigt.
 >
 > Falls Sie Interesse haben, antworten Sie einfach kurz mit der Angabe, in
 > welchem Bereich Ihr Betrieb tätig ist. Details kläre ich dann gerne in einem
@@ -164,5 +170,7 @@ Punkte:
    Funktions- oder Geschäftsadresse ist.
 2. Einen Nachweis führen, dass jeder Kontakt **einzeln** und **zum selben
    konkreten Anliegen** erfolgt ist (Datum, Betrieb, Kanal).
-3. Keine zweite Nachricht ohne Reaktion.
+3. Höchstens **eine** sachliche Folgenachricht nach etwa 5–7 Werktagen, danach
+   kein weiterer Kontakt (Ablauf und Vorlage: `docs/FIELDPRO_PILOT_PROCESS.md`,
+   Abschnitte 5 und 7).
 4. Vor jeder Kontaktwelle erneut prüfen, ob sich die Rechtslage geändert hat.
