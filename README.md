@@ -181,6 +181,7 @@ dgleichlabs-website/
 │  ├─ build.py              Generator
 │  ├─ check.py              Qualitäts-/Sicherheitsprüfung
 │  ├─ serve.py              lokaler Vorschau-Server
+│  ├─ package.py            sauberes Deployment-ZIP aus public/ erzeugen
 │  └─ assets.py             PNG-Assets erzeugen
 ├─ public/                  **Auslieferungsstand** (generiert, gehostet)
 │  ├─ index.html, 404.html

@@ -159,7 +159,15 @@ python tools/assets.py --check   # Assets passen
 python tools/check.py            # Qualität: Links, Header, Hosting-Dateien, Secrets
 python tools/production_gate.py  # Freigabe: 0 = veröffentlichbar
 python -m unittest discover -s tools/tests -t tools
+python tools/package.py          # sauberes Deployment-ZIP aus public/ erzeugen
+python tools/package.py --check  # Inhalt des ZIPs automatisiert prüfen
 ```
+
+`tools/package.py` packt ausschließlich die ausgelieferten Produktionsdateien
+und lässt reine Repository-Artefakte weg. Insbesondere die `.gitkeep`-Dateien
+unter `public/assets/projects/<id>/` (sie halten im Git nur die leeren
+Projektordner) landen **nicht** im Paket. Das ZIP entsteht nur, wenn
+`build.py --check` und `production_gate.py` grün sind.
 
 > **Notbremse:** `python tools/production_gate.py` blockiert die
 > Veröffentlichung, solange in `public/` noch Platzhalter oder der Hinweis
@@ -181,10 +189,13 @@ vorbereitet oder automatisiert):
 - **Dateimanager** im Webhosting-Interface (Helpcenter „Dateimanager
   verwenden“) – für einen einmaligen Upload ausreichend.
 
-**Upload-Inhalt (exakt):** alle Dateien und Ordner aus `public/`, inklusive
-`.htaccess` und inklusive der versteckten Dateien. **Nicht** hochladen:
-`content/`, `src/`, `tools/`, `docs/`, `.github/`, `README.md`, `LICENSE` –
-das sind Quellen bzw. Repository-Dateien.
+**Upload-Inhalt (exakt):** der Inhalt des mit `tools/package.py` erzeugten
+ZIPs (`dgleichlabs-deploy-final.zip`) bzw. alle Dateien und Ordner aus
+`public/`, inklusive `.htaccess`. Ohne das Werkzeug wäre beim Kopieren von
+`public/` darauf zu achten, dass die `.gitkeep`-Dateien in den Projektordnern
+**nicht** mit hochgeladen werden. **Nicht** hochladen: `content/`, `src/`,
+`tools/`, `docs/`, `.github/`, `README.md`, `LICENSE` – das sind Quellen bzw.
+Repository-Dateien.
 
 ## 6. Nach dem ersten Upload prüfen
 

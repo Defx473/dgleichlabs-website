@@ -71,8 +71,12 @@ jobs:
       - name: Block package while legal placeholders remain
         run: python tools/production_gate.py --list
 
-  # Stellt den später manuell nach netcup hochzuladenden Ordner bereit.
+  # Stellt das später manuell nach netcup hochzuladende Paket bereit.
   # Kein Pages-Upload: der Inhalt von public/ ist das Produkt.
+  #
+  # Das Paket wird mit tools/package.py erzeugt, damit keine reinen
+  # Repository-Artefakte (z. B. .gitkeep aus leeren Projektordnern) im Upload
+  # landen. Der --check-Schritt prueft den Inhalt des ZIPs automatisch.
   package:
     name: Package httpdocs payload
     needs: production-gate
@@ -81,9 +85,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Upload public/ as artifact
+      - name: Build clean deployment package
+        run: |
+          python tools/package.py --output dgleichlabs-httpdocs.zip
+          python tools/package.py --check dgleichlabs-httpdocs.zip
+
+      - name: Upload deployment package
         uses: actions/upload-artifact@v7
         with:
           name: dgleichlabs-httpdocs
-          path: public
+          path: dgleichlabs-httpdocs.zip
           if-no-files-found: error
