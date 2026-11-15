@@ -22,6 +22,15 @@
       "published": true
     },
     {
+      "id": "dg-service",
+      "name": "DG Service & Wartungsplaner",
+      "status": "in-development",
+      "statusLabel": "Verkaufsstart in Vorbereitung",
+      "summary": "Deutschsprachige Excel-Vorlage zur Verwaltung von Kunden, Objekten, technischen Anlagen, Wartungsterminen und Material. Eine öffentliche Verkaufsfreigabe steht noch aus.",
+      "areas": ["Excel", "Wartung", "Handwerk"],
+      "published": true
+    },
+    {
       "id": "dimitri-ai-studio",
       "name": "Dimitri AI Studio",
       "status": "in-development",
@@ -63,6 +72,78 @@
       "areas": ["Web3", "Solana"],
       "detailUrl": "/karto/",
       "detailLabel": "Projektseite ansehen",
+      "published": true
+    },
+    {
+      "id": "dg3d-studio",
+      "name": "DG3D Studio",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Werkzeuge für die Erstellung und Bearbeitung von 3D-Inhalten. Das Projekt befindet sich in der Entwicklung und ist derzeit nicht öffentlich verfügbar.",
+      "areas": ["3D", "Entwicklungswerkzeuge"],
+      "published": true
+    },
+    {
+      "id": "shattered-skies",
+      "name": "Shattered Skies",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Eigenständiges Fantasy-Rollenspiel in Entwicklung. Spielwelt, Kampfsysteme und Gestaltung werden prototypisch erprobt.",
+      "areas": ["Game Development", "Godot"],
+      "published": true
+    },
+    {
+      "id": "dg-kids-academy",
+      "name": "DG Kids Academy",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Experimentelle Lernanwendung für Kinder mit interaktiven Lernaufgaben und dreidimensionalen Darstellungen. Noch nicht veröffentlicht.",
+      "areas": ["Lernen", "Mobile", "3D"],
+      "published": true
+    },
+    {
+      "id": "voted-party-friends",
+      "name": "VOTED! – Party & Friends",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Partyspiel für gemeinsame Spielrunden. Eine eigenständige App ist in Entwicklung; eine Veröffentlichung ist noch nicht bestätigt.",
+      "areas": ["Mobile", "Partyspiel"],
+      "published": true
+    },
+    {
+      "id": "voted-kids",
+      "name": "VOTED! Kids",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Eigenständiges, altersgerechtes Spielprojekt für Kinder. Die App befindet sich in Entwicklung und ist noch nicht veröffentlicht.",
+      "areas": ["Mobile", "Kinder"],
+      "published": true
+    },
+    {
+      "id": "dg-tcg-scanner",
+      "name": "DG TCG Scanner",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Mobiles Projekt zur Erfassung und Verwaltung von Sammelkarten. Funktionen und Darstellung werden derzeit getestet und verbessert.",
+      "areas": ["Mobile", "Scanner"],
+      "published": true
+    },
+    {
+      "id": "dg-remote",
+      "name": "DG Remote",
+      "status": "in-development",
+      "statusLabel": "In Entwicklung",
+      "summary": "Experimentelles Werkzeug für den Fernzugriff auf eigene Geräte. In Entwicklung; derzeit nicht als öffentliches Produkt angeboten.",
+      "areas": ["Remote", "Mobile"],
+      "published": true
+    },
+    {
+      "id": "staycontrol",
+      "name": "StayControl",
+      "status": "in-development",
+      "statusLabel": "Sicherheitsprüfung",
+      "summary": "Softwareprojekt im Bereich digitaler Abläufe und Verwaltung. Aktuell werden Sicherheitsprüfungen durchgeführt; keine öffentliche Produktverfügbarkeit behauptet.",
+      "areas": ["Software", "Sicherheit"],
       "published": true
     },
     {
