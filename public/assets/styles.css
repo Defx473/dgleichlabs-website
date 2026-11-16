@@ -737,7 +737,10 @@ ol {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
+  /* Lange Statusangaben (z. B. "Verkaufsstart in Vorbereitung") rutschen in
+     schmalen Karten unter den Titel, statt seitlich aus der Karte zu laufen. */
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
 }
 
 .project-head h3 {
